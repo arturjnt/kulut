@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "452448494882",
+    "project_id": "kulut-3f2c9",
+    "storage_bucket": "kulut-3f2c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452448494882:android:46a0439d24ec84e5f0717b",
+        "android_client_info": {
+          "package_name": "com.example.kulut"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452448494882-6lsh3m0vodduho6oh3llb9piqlfqp8ha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC48fxkgDaNHvcaSQfvY_d3yAntndVbWwc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452448494882-6lsh3m0vodduho6oh3llb9piqlfqp8ha.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
