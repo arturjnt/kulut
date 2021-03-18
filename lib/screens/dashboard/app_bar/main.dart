@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
+import '../../../providers/auth.dart';
+
 class KulutAppBar extends StatelessWidget implements PreferredSizeWidget {
   final AppBar appBar;
 
@@ -12,6 +16,22 @@ class KulutAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text('Kulut'),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.atm_outlined),
+          tooltip: 'Settle',
+          onPressed: () {
+            // TODO: Settle pop-up with settle_up screen - calling provider XXX? action settle
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.exit_to_app),
+          tooltip: 'Logout',
+          onPressed: () {
+            Provider.of<Auth>(context, listen: false).signOut();
+          },
+        ),
+      ],
     );
   }
 }
