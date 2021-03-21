@@ -35,7 +35,7 @@ class Auth with ChangeNotifier {
   Future<Map> createOrGetUser(User user) async {
     QuerySnapshot qSnap = await FirebaseFirestore.instance
         .collection('users')
-        .where('uid', isEqualTo: user.uid)
+        .where('id', isEqualTo: user.uid)
         .get();
 
     // Check if he's already registered, if not, do it
@@ -83,7 +83,7 @@ class Auth with ChangeNotifier {
     await prefs.setString('_id', _user['id']);
     await prefs.setString('_name', _user['displayName']);
     await prefs.setString('_pic', _user['pic']);
-    await prefs.setDouble('balance', _user['balance']);
+    await prefs.setDouble('_balance', _user['balance']);
 
     await setUserInfo();
 
