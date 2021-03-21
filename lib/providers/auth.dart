@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
   String _id;
@@ -20,6 +21,12 @@ class Auth with ChangeNotifier {
 
   double get balance {
     return _balance;
+  }
+
+  Future<void> setUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    _name = prefs.get('_name');
+    _picUrl = prefs.get('_picUrl');
   }
 
   Future<void> signIn() async {
@@ -67,14 +74,9 @@ class Auth with ChangeNotifier {
     // // Get animals (for now getting just 1)
     // final animal = await userToSaveLocally['animals'][0].get();
     //
-    // final prefs = await SharedPreferences.getInstance();
-    // final userData = json.encode({
-    //   'userId': userToSaveLocally['uid'],
-    //   'displayName': userToSaveLocally['displayName'],
-    //   'animalName': animal['name'],
-    //   'animalId': animal.reference.id,
-    // });
-    // await prefs.setString('userData', userData);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('_name', currentUser.displayName);
+    await prefs.setString('_picUrl', currentUser.photoURL);
 
     notifyListeners();
   }
@@ -86,8 +88,8 @@ class Auth with ChangeNotifier {
     await googleSignIn.signOut();
     await _auth.signOut();
 
-    // final prefs = await SharedPreferences.getInstance();
-    // prefs.clear();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
 
     notifyListeners();
   }
