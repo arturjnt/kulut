@@ -77,6 +77,7 @@ class Auth with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('_name', currentUser.displayName);
     await prefs.setString('_picUrl', currentUser.photoURL);
+    await setUserInfo();
 
     notifyListeners();
   }
