@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
   String _id;
   String _name;
-  String _picUrl;
+  String _pic;
   double _balance;
 
   String get name {
@@ -16,7 +17,7 @@ class Auth with ChangeNotifier {
   }
 
   String get pic {
-    return _picUrl;
+    return _pic;
   }
 
   double get balance {
@@ -25,8 +26,32 @@ class Auth with ChangeNotifier {
 
   Future<void> setUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
+    _id = prefs.get('_id');
     _name = prefs.get('_name');
-    _picUrl = prefs.get('_picUrl');
+    _pic = prefs.get('_pic');
+    _balance = prefs.get('_balance');
+  }
+
+  Future<Map> createOrGetUser(User user) async {
+    QuerySnapshot qSnap = await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: user.uid)
+        .get();
+
+    // Check if he's already registered, if not, do it
+    if (qSnap.docs.toString() == '[]') {
+      DocumentReference _newUserRef =
+          await FirebaseFirestore.instance.collection('users').add({
+        'id': user.uid,
+        'displayName': user.displayName,
+        'pic': user.photoURL,
+        'balance': 0.0,
+      });
+      DocumentSnapshot _newUser = await _newUserRef.get();
+      return _newUser.data();
+    } else {
+      return qSnap.docs[0].data();
+    }
   }
 
   Future<void> signIn() async {
@@ -52,31 +77,14 @@ class Auth with ChangeNotifier {
 
     if (user == null) return null;
 
-    final User currentUser = _auth.currentUser;
+    Map _user = await createOrGetUser(_auth.currentUser);
 
-    // QuerySnapshot qSnap = await FirebaseFirestore.instance
-    //     .collection('users')
-    //     .where('uid', isEqualTo: currentUser.uid)
-    //     .get();
-    //
-    // // Check if he's already registered, if not, register and get him
-    // if (qSnap.docs.toString() == '[]') {
-    //   await FirebaseFirestore.instance.collection('users').add(
-    //       {'uid': currentUser.uid, 'displayName': currentUser.displayName});
-    //   qSnap = await FirebaseFirestore.instance
-    //       .collection('users')
-    //       .where('uid', isEqualTo: currentUser.uid)
-    //       .get();
-    // }
-    //
-    // final userToSaveLocally = qSnap.docs[0].data();
-    //
-    // // Get animals (for now getting just 1)
-    // final animal = await userToSaveLocally['animals'][0].get();
-    //
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('_name', currentUser.displayName);
-    await prefs.setString('_picUrl', currentUser.photoURL);
+    await prefs.setString('_id', _user['id']);
+    await prefs.setString('_name', _user['displayName']);
+    await prefs.setString('_pic', _user['pic']);
+    await prefs.setDouble('balance', _user['balance']);
+
     await setUserInfo();
 
     notifyListeners();
