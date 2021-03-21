@@ -30,6 +30,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       key: _formKey,
       child: Column(
         children: [
+          // TODO: missing with whom to split it
+          // TODO: missing when was it (default now)
           DropdownButton<String>(
             value: _pickedCategoryId,
             icon: const Icon(Icons.chevron_right),
@@ -89,6 +91,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
+                  // TODO: submit form
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text(
                     _pickedCategoryId +
