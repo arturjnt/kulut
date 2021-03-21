@@ -16,13 +16,13 @@ class DashboardScreen extends StatelessWidget {
       body: Container(
         height: deviceSize.height - 100,
         width: deviceSize.width,
-        color: Colors.red,
-          child: Column(
-            children: [
-              UserInfoScreen(),
-              AddExpenseScreen(),
-            ],
-          ),
+        child: Column(
+          children: [
+            UserInfoScreen(),
+            SizedBox(height: 20),
+            AddExpenseScreen(),
+          ],
+        ),
       ),
     );
   }
