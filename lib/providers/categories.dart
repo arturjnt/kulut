@@ -12,6 +12,15 @@ class Category {
     @required this.color,
     @required this.icon,
   });
+
+  static Map toMap(Category c) {
+    return {
+      'id': c.id,
+      'name': c.name,
+      'color': c.color.toString(),
+      'icon': c.icon.toString(),
+    };
+  }
 }
 
 class Categories {

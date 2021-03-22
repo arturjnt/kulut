@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'providers/auth.dart';
+import 'providers/expense.dart';
 
 import 'screens/auth/main.dart';
 import 'screens/dashboard/main.dart';
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: Auth(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Expense(),
         ),
       ],
       child: MaterialApp(

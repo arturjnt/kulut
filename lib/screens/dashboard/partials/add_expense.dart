@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kulut/screens/loading/main.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/auth.dart';
@@ -15,7 +14,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List<Category> _categories = Categories().categories;
-  String _pickedCategoryId = '1';
+  Category _pickedCategory;
   String _pickedSPLIT = SPLIT.EQUALLY.toString();
   DateTime _selectedDate = DateTime.now();
   String _shareWithWhomId;
@@ -33,12 +32,18 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _authProvider = Provider.of<Auth>(context);
+    final _expenseProvider = Provider.of<Expense>(context);
+
+    // _categories can't be accessed in the initializer
+    _pickedCategory = _categories[0];
+
     return Form(
       key: _formKey,
       child: Column(
         children: [
           FutureBuilder(
-            future: Provider.of<Auth>(context).getUsersToShare(),
+            future: _authProvider.getUsersToShare(),
             builder: (ctx, authSnap) {
               if (authSnap.connectionState == ConnectionState.waiting) {
                 return DropdownButton(
@@ -74,17 +79,17 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
               );
             },
           ),
-          DropdownButton<String>(
-            value: _pickedCategoryId,
+          DropdownButton<Category>(
+            value: _pickedCategory,
             icon: const Icon(Icons.chevron_right),
-            onChanged: (String newValue) {
+            onChanged: (Category newValue) {
               setState(() {
-                _pickedCategoryId = newValue;
+                _pickedCategory = newValue;
               });
             },
-            items: _categories.map<DropdownMenuItem<String>>((Category _cat) {
-              return DropdownMenuItem<String>(
-                value: _cat.id.toString(),
+            items: _categories.map<DropdownMenuItem<Category>>((Category _cat) {
+              return DropdownMenuItem<Category>(
+                value: _cat,
                 child: Row(
                   children: [
                     Icon(_cat.icon, color: _cat.color),
@@ -149,21 +154,19 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  // TODO: submit form
+                  // TODO: missing changing the SPLIT type enum based on _pickedSPLIT
+                  Expense _expenseToSubmit = Expense(
+                      description: _descriptionController.text,
+                      cost: double.parse(_costController.text),
+                      when: _selectedDate,
+                      paidByPersonId: _authProvider.id,
+                      splitWithPersonId: _shareWithWhomId,
+                      category: _pickedCategory);
+
+                  _expenseProvider.saveExpense(_expenseToSubmit);
+
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                    _pickedCategoryId +
-                        ' - ' +
-                        _descriptionController.text +
-                        ' - ' +
-                        _costController.text +
-                        ' - ' +
-                        _pickedSPLIT +
-                        ' - ' +
-                        _selectedDate.toString() +
-                        ' - ' +
-                        _shareWithWhomId,
-                  )));
+                      content: Text(Expense.toMap(_expenseToSubmit).toString())));
                 }
               },
               child: Text('Submit'),

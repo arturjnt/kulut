@@ -12,6 +12,10 @@ class Auth with ChangeNotifier {
   String _pic;
   double _balance;
 
+  String get id {
+    return _id;
+  }
+
   String get name {
     return _name;
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'categories.dart';
 
 enum SPLIT { EQUALLY, ME_TOTAL, OTHER_TOTAL }
@@ -23,7 +25,27 @@ class Expense with ChangeNotifier {
     this.split = SPLIT.EQUALLY,
   });
 
-  Future<void> saveExpense() {}
+  static Map toMap(Expense e) {
+    return {
+      'description': e.description,
+      'cost': e.cost,
+      'when': e.when.millisecondsSinceEpoch,
+      'paidByPersonId': e.paidByPersonId,
+      'splitWithPersonId': e.splitWithPersonId,
+      'category': Category.toMap(e.category),
+      'split': e.split.toString(),
+    };
+  }
+
+  Future<void> saveExpense(Expense e) async {
+    print(toMap(e).toString());
+    // TODO: fix: Unhandled Exception: type '_InternalLinkedHashMap<dynamic, dynamic>' is not a subtype of type 'Map<String, dynamic>'
+    DocumentReference _newExpenseRef = await FirebaseFirestore.instance
+        .collection('expenses')
+        .add(toMap(e));
+    DocumentSnapshot _newExpense = await _newExpenseRef.get();
+    return _newExpense.data();
+  }
 
   Future<List<Expense>> getTotalExpenses() {}
 }
