@@ -15,7 +15,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   List<Category> _categories = Categories().categories;
   Category _pickedCategory;
-  String _pickedSPLIT = SPLIT.EQUALLY.toString();
+  SPLIT _pickedSPLIT = SPLIT.EQUALLY;
   DateTime _selectedDate = DateTime.now();
   String _shareWithWhomId;
 
@@ -123,16 +123,16 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
               return null;
             },
           ),
-          DropdownButton<String>(
+          DropdownButton<SPLIT>(
             value: _pickedSPLIT,
-            onChanged: (String newValue) {
+            onChanged: (SPLIT newValue) {
               setState(() {
                 _pickedSPLIT = newValue;
               });
             },
-            items: SPLIT.values.map<DropdownMenuItem<String>>((SPLIT _split) {
-              return DropdownMenuItem<String>(
-                  value: _split.toString(), child: Text(_split.toString()));
+            items: SPLIT.values.map<DropdownMenuItem<SPLIT>>((SPLIT _split) {
+              return DropdownMenuItem<SPLIT>(
+                  value: _split, child: Text(_split.toString()));
             }).toList(),
           ),
           TextButton(
@@ -155,14 +155,14 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  // TODO: missing changing the SPLIT type enum based on _pickedSPLIT
                   Expense _expenseToSubmit = Expense(
                       description: _descriptionController.text,
                       cost: double.parse(_costController.text),
                       when: _selectedDate,
                       paidByPersonId: _authProvider.id,
                       splitWithPersonId: _shareWithWhomId,
-                      category: _pickedCategory);
+                      category: _pickedCategory,
+                      split: _pickedSPLIT);
 
                   _expenseProvider.saveExpense(_expenseToSubmit);
 
@@ -175,7 +175,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     _descriptionController.clear();
                     _costController.clear();
                     _selectedDate = DateTime.now();
-                    _pickedSPLIT = SPLIT.EQUALLY.toString();
+                    _pickedSPLIT = SPLIT.EQUALLY;
                   });
                 }
               },
