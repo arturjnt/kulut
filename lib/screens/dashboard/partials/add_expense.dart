@@ -169,6 +169,14 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Expense Saved!')),
                   );
+
+                  // Clear form
+                  setState(() {
+                    _descriptionController.clear();
+                    _costController.clear();
+                    _selectedDate = DateTime.now();
+                    _pickedSPLIT = SPLIT.EQUALLY.toString();
+                  });
                 }
               },
               child: Text('Submit'),
