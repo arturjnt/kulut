@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kulut/screens/loading/main.dart';
+import 'package:provider/provider.dart';
 
+import '../../../providers/auth.dart';
 import '../../../providers/categories.dart';
 import '../../../providers/expense.dart';
 
@@ -11,10 +14,11 @@ class AddExpenseScreen extends StatefulWidget {
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  List<Category> categories = Categories().categories;
+  List<Category> _categories = Categories().categories;
   String _pickedCategoryId = '1';
   String _pickedSPLIT = SPLIT.EQUALLY.toString();
   DateTime _selectedDate = DateTime.now();
+  String _shareWithWhomId;
 
   final _descriptionController = TextEditingController();
   final _costController = TextEditingController();
@@ -33,8 +37,38 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       key: _formKey,
       child: Column(
         children: [
-          // TODO: missing with whom to split it
-          // TODO: missing when was it (default now)
+          FutureBuilder(
+            future: Provider.of<Auth>(context).getUsersToShare(),
+            builder: (ctx, authSnap) {
+              if (authSnap.connectionState == ConnectionState.waiting) {
+                return LoadingScreen();
+              }
+
+              // Set default as first of the list
+              _shareWithWhomId = authSnap.data[0]['id'];
+
+              return DropdownButton<String>(
+                value: _shareWithWhomId,
+                icon: const Icon(Icons.chevron_right),
+                onChanged: (String newValue) {
+                  setState(() {
+                    _shareWithWhomId = newValue;
+                  });
+                },
+                items: authSnap.data.map<DropdownMenuItem<String>>((Map _user) {
+                  return DropdownMenuItem<String>(
+                    value: _user['id'],
+                    child: Row(
+                      children: [
+                        Image.network(_user['pic'], height: 20),
+                        Text(_user['name']),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              );
+            },
+          ),
           DropdownButton<String>(
             value: _pickedCategoryId,
             icon: const Icon(Icons.chevron_right),
@@ -43,7 +77,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 _pickedCategoryId = newValue;
               });
             },
-            items: categories.map<DropdownMenuItem<String>>((Category _cat) {
+            items: _categories.map<DropdownMenuItem<String>>((Category _cat) {
               return DropdownMenuItem<String>(
                 value: _cat.id.toString(),
                 child: Row(
@@ -98,7 +132,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 firstDate: DateTime.now().subtract(Duration(days: 365)),
                 lastDate: DateTime.now(),
               ).then((_date) {
-                if(_date == null){}
+                if (_date == null) {}
                 setState(() {
                   _selectedDate = _date;
                 });
@@ -121,7 +155,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         ' - ' +
                         _pickedSPLIT +
                         ' - ' +
-                        _selectedDate.toString(),
+                        _selectedDate.toString() +
+                        ' - ' +
+                        _shareWithWhomId,
                   )));
                 }
               },

@@ -24,6 +24,25 @@ class Auth with ChangeNotifier {
     return _balance;
   }
 
+  Future<List> getUsersToShare() async {
+    // Make sure the Id is in the class
+    await setUserInfo();
+    QuerySnapshot qSnap = await FirebaseFirestore.instance
+        .collection('users')
+        .where('id', isNotEqualTo: _id)
+        .get();
+
+    // Check if he's already registered, if not, do it
+    if (qSnap.docs.toString() == '[]') {
+      return [];
+    }
+
+    return qSnap.docs
+        .map((doc) =>
+            {'id': doc['id'], 'name': doc['displayName'], 'pic': doc['pic']})
+        .toList();
+  }
+
   Future<void> setUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
     _id = prefs.get('_id');
