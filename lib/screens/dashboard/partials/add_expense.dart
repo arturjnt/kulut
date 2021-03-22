@@ -41,7 +41,12 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
             future: Provider.of<Auth>(context).getUsersToShare(),
             builder: (ctx, authSnap) {
               if (authSnap.connectionState == ConnectionState.waiting) {
-                return LoadingScreen();
+                return DropdownButton(
+                    value: '1',
+                    items: ['']
+                        .map<DropdownMenuItem<String>>((_) => DropdownMenuItem(
+                            value: '1', child: Text('Loading people...')))
+                        .toList());
               }
 
               // Set default as first of the list

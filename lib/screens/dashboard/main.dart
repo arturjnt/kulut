@@ -12,12 +12,14 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       appBar: KulutAppBar(appBar: AppBar()),
       body: Container(
-        child: Column(
-          children: [
-            UserInfoScreen(),
-            SizedBox(height: 20),
-            AddExpenseScreen(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              UserInfoScreen(),
+              SizedBox(height: 20),
+              AddExpenseScreen(),
+            ],
+          ),
         ),
       ),
     );
