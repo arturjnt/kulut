@@ -25,7 +25,7 @@ class Expense with ChangeNotifier {
     this.split = SPLIT.EQUALLY,
   });
 
-  static Map toMap(Expense e) {
+  static Map<String, dynamic> toMap(Expense e) {
     return {
       'description': e.description,
       'cost': e.cost,
@@ -38,8 +38,6 @@ class Expense with ChangeNotifier {
   }
 
   Future<void> saveExpense(Expense e) async {
-    print(toMap(e).toString());
-    // TODO: fix: Unhandled Exception: type '_InternalLinkedHashMap<dynamic, dynamic>' is not a subtype of type 'Map<String, dynamic>'
     DocumentReference _newExpenseRef = await FirebaseFirestore.instance
         .collection('expenses')
         .add(toMap(e));

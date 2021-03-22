@@ -59,7 +59,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
               return DropdownButton<String>(
                 value: _shareWithWhomId,
-                icon: const Icon(Icons.chevron_right),
                 onChanged: (String newValue) {
                   setState(() {
                     _shareWithWhomId = newValue;
@@ -81,7 +80,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           ),
           DropdownButton<Category>(
             value: _pickedCategory,
-            icon: const Icon(Icons.chevron_right),
             onChanged: (Category newValue) {
               setState(() {
                 _pickedCategory = newValue;
@@ -123,7 +121,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           ),
           DropdownButton<String>(
             value: _pickedSPLIT,
-            icon: const Icon(Icons.chevron_right),
             onChanged: (String newValue) {
               setState(() {
                 _pickedSPLIT = newValue;
@@ -165,8 +162,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
                   _expenseProvider.saveExpense(_expenseToSubmit);
 
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(Expense.toMap(_expenseToSubmit).toString())));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Expense Saved!')),
+                  );
                 }
               },
               child: Text('Submit'),
