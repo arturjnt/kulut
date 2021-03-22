@@ -23,6 +23,13 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final _costController = TextEditingController();
 
   @override
+  void initState() {
+    // _categories can't be accessed in the initializer
+    _pickedCategory = _categories[0];
+    super.initState();
+  }
+
+  @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     _descriptionController.dispose();
@@ -34,9 +41,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   Widget build(BuildContext context) {
     final _authProvider = Provider.of<Auth>(context);
     final _expenseProvider = Provider.of<Expense>(context);
-
-    // _categories can't be accessed in the initializer
-    _pickedCategory = _categories[0];
 
     return Form(
       key: _formKey,
