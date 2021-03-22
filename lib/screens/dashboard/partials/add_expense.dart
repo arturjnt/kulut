@@ -9,11 +9,12 @@ class AddExpenseScreen extends StatefulWidget {
 }
 
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
+  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   List<Category> categories = Categories().categories;
   String _pickedCategoryId = '1';
   String _pickedSPLIT = SPLIT.EQUALLY.toString();
 
-  final _formKey = GlobalKey<FormState>();
   final _descriptionController = TextEditingController();
   final _costController = TextEditingController();
 
@@ -21,6 +22,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   void dispose() {
     // Clean up the controller when the widget is disposed.
     _descriptionController.dispose();
+    _costController.dispose();
     super.dispose();
   }
 

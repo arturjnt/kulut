@@ -9,13 +9,9 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: KulutAppBar(appBar: AppBar()),
       body: Container(
-        height: deviceSize.height - 100,
-        width: deviceSize.width,
         child: Column(
           children: [
             UserInfoScreen(),
