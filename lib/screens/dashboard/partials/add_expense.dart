@@ -14,6 +14,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   List<Category> categories = Categories().categories;
   String _pickedCategoryId = '1';
   String _pickedSPLIT = SPLIT.EQUALLY.toString();
+  DateTime _selectedDate = DateTime.now();
 
   final _descriptionController = TextEditingController();
   final _costController = TextEditingController();
@@ -89,6 +90,22 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   value: _split.toString(), child: Text(_split.toString()));
             }).toList(),
           ),
+          TextButton(
+            onPressed: () {
+              showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime.now().subtract(Duration(days: 365)),
+                lastDate: DateTime.now(),
+              ).then((_date) {
+                if(_date == null){}
+                setState(() {
+                  _selectedDate = _date;
+                });
+              });
+            },
+            child: Text('pick date : ' + _selectedDate.toString()),
+          ),
           InkWell(
             child: ElevatedButton(
               onPressed: () {
@@ -102,7 +119,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         ' - ' +
                         _costController.text +
                         ' - ' +
-                        _pickedSPLIT,
+                        _pickedSPLIT +
+                        ' - ' +
+                        _selectedDate.toString(),
                   )));
                 }
               },
