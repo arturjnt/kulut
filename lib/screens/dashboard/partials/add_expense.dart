@@ -43,8 +43,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _authProvider = Provider.of<Auth>(context, listen: false);
-    final _expenseProvider = Provider.of<Expense>(context, listen: false);
+    final _authProvider = Provider.of<Auth>(context);
+    final _expenseProvider = Provider.of<Expense>(context);
 
     return Form(
       key: _formKey,
