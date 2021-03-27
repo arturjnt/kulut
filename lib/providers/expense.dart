@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth.dart';
 import 'categories.dart';
@@ -53,15 +54,33 @@ class Expense with ChangeNotifier {
   }
 
   Future<List<Expense>> getAllExpenses() async {
-    QuerySnapshot qSnap = await FirebaseFirestore.instance
+    // get all expenses i paid or splitwithme
+    final prefs = await SharedPreferences.getInstance();
+
+    QuerySnapshot qSnapPaid = await FirebaseFirestore.instance
         .collection('expenses')
-        .orderBy('when', descending: true)
-        .where('splitWithPersonId', isEqualTo: Auth().id)
+        .where('paidByPersonId', isEqualTo: prefs.get('_id'))
         .get();
 
+    QuerySnapshot qSnapSplit = await FirebaseFirestore.instance
+        .collection('expenses')
+        .where('splitWithPersonId', isEqualTo: prefs.get('_id'))
+        .get();
+
+    QuerySnapshot qSnap;
+
     // Check if he's already registered, if not, do it
-    if (qSnap.docs.toString() == '[]') {
-      return [];
+    if (qSnapPaid.docs.toString() == '[]') {
+      if (qSnapSplit.docs.toString() == '[]') {
+        return [];
+      }
+      qSnap = qSnapSplit;
+    } else {
+      if (qSnapSplit.docs.toString() == '[]') {
+        qSnap = qSnapPaid;
+      }
+      qSnapPaid.docs.addAll(qSnapSplit.docs);
+      qSnap = qSnapPaid;
     }
 
     // create expenses and return
@@ -79,6 +98,7 @@ class Expense with ChangeNotifier {
           ));
     }).toList();
 
+    _allExpenses.sort((a, b) => b.when.compareTo(a.when));
     return _allExpenses;
   }
 
