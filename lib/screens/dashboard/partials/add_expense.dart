@@ -5,8 +5,6 @@ import '../../../providers/auth.dart';
 import '../../../providers/categories.dart';
 import '../../../providers/expense.dart';
 
-import '../../../screens/loading/main.dart';
-
 class AddExpenseScreen extends StatefulWidget {
   @override
   _AddExpenseScreenState createState() => _AddExpenseScreenState();
@@ -54,7 +52,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
             future: _authProvider.getMyBalance(),
             builder: (ctx, _balanceSnap) =>
                 (_balanceSnap.connectionState == ConnectionState.waiting)
-                    ? LoadingScreen()
+                    ? Text('Recalculating balance...')
                     : Text(_balanceSnap.data.toStringAsFixed(2)),
           ),
           FutureBuilder(
