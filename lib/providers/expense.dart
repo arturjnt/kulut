@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'categories.dart';
+import 'auth.dart';
 
 enum SPLIT { EQUALLY, ME_TOTAL, OTHER_TOTAL }
 
@@ -12,7 +12,7 @@ class Expense with ChangeNotifier {
   DateTime when;
   String paidByPersonId;
   String splitWithPersonId;
-  Category category;
+  int categoryId;
   SPLIT split;
 
   Expense({
@@ -21,7 +21,7 @@ class Expense with ChangeNotifier {
     @required this.when,
     @required this.paidByPersonId,
     @required this.splitWithPersonId,
-    @required this.category,
+    @required this.categoryId,
     this.split = SPLIT.EQUALLY,
   });
 
@@ -32,18 +32,43 @@ class Expense with ChangeNotifier {
       'when': e.when.millisecondsSinceEpoch,
       'paidByPersonId': e.paidByPersonId,
       'splitWithPersonId': e.splitWithPersonId,
-      'category': Category.toMap(e.category),
+      'categoryId': e.categoryId,
       'split': e.split.toString(),
     };
   }
 
   Future<void> saveExpense(Expense e) async {
-    DocumentReference _newExpenseRef = await FirebaseFirestore.instance
-        .collection('expenses')
-        .add(toMap(e));
+    DocumentReference _newExpenseRef =
+        await FirebaseFirestore.instance.collection('expenses').add(toMap(e));
     DocumentSnapshot _newExpense = await _newExpenseRef.get();
     return _newExpense.data();
   }
 
-  Future<List<Expense>> getTotalExpenses() {}
+  Future<List<Expense>> getAllExpenses() async {
+    QuerySnapshot qSnap = await FirebaseFirestore.instance
+        .collection('expenses')
+        .where('splitWithPersonId', isEqualTo: Auth().id)
+        .get();
+
+    // Check if he's already registered, if not, do it
+    if (qSnap.docs.toString() == '[]') {
+      return [];
+    }
+
+    // create expenses and return
+    List<Expense> _allExpenses = qSnap.docs.map((doc) {
+      return Expense(
+          description: doc['description'],
+          cost: doc['cost'],
+          when: DateTime.fromMillisecondsSinceEpoch(doc['when']),
+          paidByPersonId: doc['paidByPersonId'],
+          splitWithPersonId: doc['splitWithPersonId'],
+          categoryId: doc['categoryId'],
+          split: SPLIT.values.firstWhere(
+            (e) => e.toString() == doc['split'],
+          ));
+    }).toList();
+
+    return _allExpenses;
+  }
 }

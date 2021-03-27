@@ -88,6 +88,6 @@ class Categories {
   }
 
   Category getCategoryById(int id) {
-    return _categories.firstWhere((el) => id == el.id);
+    return categories.firstWhere((el) => id == el.id);
   }
 }

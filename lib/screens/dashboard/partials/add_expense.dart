@@ -14,7 +14,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List<Category> _categories = Categories().categories;
-  Category _pickedCategory;
+  int _pickedCategoryId;
   SPLIT _pickedSPLIT = SPLIT.EQUALLY;
   DateTime _selectedDate = DateTime.now();
   String _shareWithWhomId;
@@ -25,7 +25,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   @override
   void initState() {
     // _categories can't be accessed in the initializer
-    _pickedCategory = _categories[0];
+    _pickedCategoryId = _categories[0].id;
     super.initState();
   }
 
@@ -82,16 +82,16 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
               );
             },
           ),
-          DropdownButton<Category>(
-            value: _pickedCategory,
-            onChanged: (Category newValue) {
+          DropdownButton<int>(
+            value: _pickedCategoryId,
+            onChanged: (int newValue) {
               setState(() {
-                _pickedCategory = newValue;
+                _pickedCategoryId = newValue;
               });
             },
-            items: _categories.map<DropdownMenuItem<Category>>((Category _cat) {
-              return DropdownMenuItem<Category>(
-                value: _cat,
+            items: _categories.map<DropdownMenuItem<int>>((Category _cat) {
+              return DropdownMenuItem<int>(
+                value: _cat.id,
                 child: Row(
                   children: [
                     Icon(_cat.icon, color: _cat.color),
@@ -161,7 +161,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                       when: _selectedDate,
                       paidByPersonId: _authProvider.id,
                       splitWithPersonId: _shareWithWhomId,
-                      category: _pickedCategory,
+                      categoryId: _pickedCategoryId,
                       split: _pickedSPLIT);
 
                   _expenseProvider.saveExpense(_expenseToSubmit);
