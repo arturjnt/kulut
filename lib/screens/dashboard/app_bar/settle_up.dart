@@ -18,7 +18,7 @@ class SettleUp {
           TextButton(
             child: Text('Yes'),
             onPressed: () {
-              // TODO: calling provider XXX? action settle
+              // TODO: calling provider expenses - set all past expenses as settled
               print('cenas');
               /*func(defec, ctx)*/
             },

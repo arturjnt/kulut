@@ -91,11 +91,13 @@ class Auth with ChangeNotifier {
   Future<double> getMyBalance() async {
     final prefs = await SharedPreferences.getInstance();
     String _idToSet = prefs.get('_id');
-    List<Expense> _allMyExpenses = await Expense().getAllExpenses();
-    // TODO: filter settled expenses
+    List<Expense> _allExpenses = await Expense().getAllExpenses();
+    // filter settled expenses
+    List<Expense> _allUnsettledExpenses =
+        _allExpenses.where((e) => e.settled == false).toList();
     var _balanceToSet = 0.0;
 
-    _allMyExpenses.forEach((e) {
+    _allUnsettledExpenses.forEach((e) {
       if (e.paidByPersonId == _idToSet) {
         switch (e.split) {
           case SPLIT.EQUALLY:
