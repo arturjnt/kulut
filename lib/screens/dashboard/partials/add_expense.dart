@@ -55,10 +55,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
             children: [
               FutureBuilder(
                 future: _authProvider.getMyBalance(),
-                builder: (ctx, _balanceSnap) =>
-                    (_balanceSnap.connectionState == ConnectionState.waiting)
-                        ? Text('Recalculating balance...')
-                        : Text('Balance: ${_balanceSnap.data.toStringAsFixed(2)}€'),
+                builder: (ctx, _balanceSnap) => (_balanceSnap.connectionState ==
+                        ConnectionState.waiting)
+                    ? Text('Recalculating balance...')
+                    : Text('Balance: ${_balanceSnap.data.toStringAsFixed(2)}€'),
               ),
               SizedBox(width: 10),
               ElevatedButton(
@@ -174,8 +174,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 firstDate: DateTime.now().subtract(Duration(days: 365)),
                 lastDate: DateTime.now(),
               ).then((_date) {
-                if (_date == null) {}
                 setState(() {
+                  if (_date == null) {
+                    _date = _selectedDate = DateTime.now();
+                  }
                   _selectedDate = _date;
                 });
               });

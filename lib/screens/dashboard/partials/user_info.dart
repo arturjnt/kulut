@@ -16,8 +16,8 @@ class UserInfoScreen extends StatelessWidget {
           : Consumer<Auth>(builder: (ctx, authData, _) {
               return Column(
                 children: [
-                  Text(authData.name),
-                  Image.network(authData.pic),
+                  if (authData.name != null) Text(authData.name),
+                  if (authData.pic != null) Image.network(authData.pic),
                 ],
               );
             }),

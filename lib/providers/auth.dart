@@ -183,7 +183,6 @@ class Auth with ChangeNotifier {
     await prefs.setString('_id', _user['id']);
     await prefs.setString('_name', _user['displayName']);
     await prefs.setString('_pic', _user['pic']);
-    await prefs.setDouble('_balance', _user['balance']);
 
     await setUserInfo();
 
