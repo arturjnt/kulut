@@ -14,6 +14,7 @@ class Expense with ChangeNotifier {
   String paidByPersonId;
   String splitWithPersonId;
   int categoryId;
+  bool settled;
   SPLIT split;
 
   Category category;
@@ -27,6 +28,7 @@ class Expense with ChangeNotifier {
     @required this.paidByPersonId,
     @required this.splitWithPersonId,
     @required this.categoryId,
+    this.settled = false,
     this.split = SPLIT.EQUALLY,
   });
 
@@ -38,6 +40,7 @@ class Expense with ChangeNotifier {
       'paidByPersonId': e.paidByPersonId,
       'splitWithPersonId': e.splitWithPersonId,
       'categoryId': e.categoryId,
+      'settled': e.settled,
       'split': e.split.toString(),
     };
   }
@@ -52,6 +55,7 @@ class Expense with ChangeNotifier {
   Future<List<Expense>> getAllExpenses() async {
     QuerySnapshot qSnap = await FirebaseFirestore.instance
         .collection('expenses')
+        .orderBy('when', descending: true)
         .where('splitWithPersonId', isEqualTo: Auth().id)
         .get();
 

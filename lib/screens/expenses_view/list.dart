@@ -40,9 +40,10 @@ class EVListScreen extends StatelessWidget {
                     e.category.icon,
                     color: e.category.color,
                   ),
-                  title: Text(e.description),
+                  title: Text(
+                      e.description + ' | settled: ' + e.settled.toString()),
                   subtitle: Text(_getSubtitle(e)),
-                  trailing: Text(DateFormat('dd/MM/yyyy').format(e.when)),
+                  trailing: Text(DateFormat('HH:mm dd/MM/yyyy').format(e.when)),
                   isThreeLine: true,
                 ),
               );
@@ -67,14 +68,12 @@ class EVListScreen extends StatelessWidget {
         }
       case SPLIT.ME_TOTAL:
         {
-          _sentence =
-              '$_splitWith owes $_paidBy: ${e.cost.toString()}€';
+          _sentence = '$_splitWith owes $_paidBy: ${e.cost.toString()}€';
           break;
         }
       case SPLIT.OTHER_TOTAL:
         {
-          _sentence =
-              '$_paidBy owes $_splitWith: ${e.cost.toString()}€';
+          _sentence = '$_paidBy owes $_splitWith: ${e.cost.toString()}€';
           break;
         }
     }
