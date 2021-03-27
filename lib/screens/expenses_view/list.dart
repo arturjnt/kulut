@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 
 import '../../screens/loading/main.dart';
 import '../../providers/expense.dart';
-import '../../providers/categories.dart';
 
 class EVListScreen extends StatelessWidget {
   static const routeName = '/ev-list';
@@ -24,7 +23,7 @@ class EVListScreen extends StatelessWidget {
         ],
       ),
       body: FutureBuilder(
-        future: Provider.of<Expense>(context).getAllExpenses(),
+        future: Provider.of<Expense>(context).getAllExpensesFull(),
         builder: (ctx, expenseSnap) {
           if (expenseSnap.connectionState == ConnectionState.waiting) {
             return LoadingScreen();
@@ -34,18 +33,17 @@ class EVListScreen extends StatelessWidget {
             itemCount: expenses.length,
             itemBuilder: (ctx, i) {
               Expense e = expenses[i];
-              Category c = Categories().getCategoryById(e.categoryId);
 
               return Card(
                 child: ListTile(
                   leading: Icon(
-                    c.icon,
-                    color: c.color,
+                    e.category.icon,
+                    color: e.category.color,
                   ),
                   title: Text(e.description),
                   subtitle: Text(_getSubtitle(e)),
                   trailing: Text(DateFormat('dd/MM/yyyy').format(e.when)),
-                  // isThreeLine: true,
+                  isThreeLine: true,
                 ),
               );
             },
@@ -57,24 +55,26 @@ class EVListScreen extends StatelessWidget {
 
   String _getSubtitle(Expense e) {
     var _sentence = '';
+    String _paidBy = e.paidByPerson[e.paidByPersonId];
+    String _splitWith = e.splitWithPerson[e.splitWithPersonId];
 
     switch (e.split) {
       case SPLIT.EQUALLY:
         {
           _sentence =
-              '${e.paidByPersonId} paid ${e.cost.toString()}€ split in half with ${e.splitWithPersonId}';
+              '$_paidBy paid half of ${e.cost.toString()}€ with $_splitWith';
           break;
         }
       case SPLIT.ME_TOTAL:
         {
           _sentence =
-          '${e.splitWithPersonId} owes ${e.paidByPersonId}: ${e.cost.toString()}€';
+              '$_splitWith owes $_paidBy: ${e.cost.toString()}€';
           break;
         }
       case SPLIT.OTHER_TOTAL:
         {
           _sentence =
-          '${e.paidByPersonId} owes ${e.splitWithPersonId}: ${e.cost.toString()}€';
+              '$_paidBy owes $_splitWith: ${e.cost.toString()}€';
           break;
         }
     }

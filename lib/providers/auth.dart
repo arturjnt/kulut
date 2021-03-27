@@ -55,6 +55,15 @@ class Auth with ChangeNotifier {
     _balance = prefs.get('_balance');
   }
 
+  Future<String> getUserName(String id) async {
+    QuerySnapshot qSnap = await FirebaseFirestore.instance
+        .collection('users')
+        .where('id', isEqualTo: id)
+        .get();
+    var user = qSnap.docs[0].data();
+    return user['displayName'];
+  }
+
   Future<Map> createOrGetUser(User user) async {
     QuerySnapshot qSnap = await FirebaseFirestore.instance
         .collection('users')
