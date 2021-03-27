@@ -54,7 +54,7 @@ class Auth with ChangeNotifier {
     _id = prefs.get('_id');
     _name = prefs.get('_name');
     _pic = prefs.get('_pic');
-    _balance = await getMyBalance(_id);
+    _balance = await getMyBalance();
   }
 
   Future<String> getUserName(String id) async {
@@ -88,13 +88,15 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<double> getMyBalance(String _id) async {
+  Future<double> getMyBalance() async {
+    final prefs = await SharedPreferences.getInstance();
+    String _idToSet = prefs.get('_id');
     List<Expense> _allMyExpenses = await Expense().getAllExpenses();
     // TODO: filter settled expenses
     var _balanceToSet = 0.0;
 
     _allMyExpenses.forEach((e) {
-      if (e.paidByPersonId == _id) {
+      if (e.paidByPersonId == _idToSet) {
         switch (e.split) {
           case SPLIT.EQUALLY:
             {
@@ -112,7 +114,7 @@ class Auth with ChangeNotifier {
               break;
             }
         }
-      } else if (e.splitWithPersonId == _id) {
+      } else if (e.splitWithPersonId == _idToSet) {
         switch (e.split) {
           case SPLIT.EQUALLY:
             {
