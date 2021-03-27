@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../providers/auth.dart';
 
 class SettleUp {
-  static void show(context) async {
+  static Future<void> show(context) async {
     double _balance = await Auth().getMyBalance();
 
-    showDialog(
+    await showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text('Settle Up: ${_balance.toStringAsFixed(2)}€ ?'),
@@ -17,9 +18,11 @@ class SettleUp {
           ),
           TextButton(
             child: Text('Yes'),
-            onPressed: () {
+            onPressed: () async {
               // TODO: calling provider expenses - set all past expenses as settled
-              print('cenas');
+              // TODO: settle with whom and choose by how much (?)
+              await Provider.of<Auth>(context, listen: false).settle();
+              Navigator.of(context).pop();
               /*func(defec, ctx)*/
             },
           ),

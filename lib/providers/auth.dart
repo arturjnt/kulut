@@ -88,6 +88,20 @@ class Auth with ChangeNotifier {
     }
   }
 
+  Future<void> settle() async {
+    List<Expense> _allExpenses = await Expense().getAllExpenses();
+    // filter settled expenses
+    List<Expense> _allUnsettledExpenses =
+    _allExpenses.where((e) => e.settled == false).toList();
+
+    _allUnsettledExpenses.forEach((exp) {
+      FirebaseFirestore.instance
+          .doc('expenses/${exp.id}')
+          .update({'settled': true});
+    });
+    notifyListeners();
+  }
+
   Future<double> getMyBalance() async {
     final prefs = await SharedPreferences.getInstance();
     String _idToSet = prefs.get('_id');

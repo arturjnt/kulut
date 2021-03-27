@@ -5,6 +5,8 @@ import '../../../providers/auth.dart';
 import '../../../providers/categories.dart';
 import '../../../providers/expense.dart';
 
+import 'settle_up.dart';
+
 class AddExpenseScreen extends StatefulWidget {
   @override
   _AddExpenseScreenState createState() => _AddExpenseScreenState();
@@ -48,12 +50,28 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       key: _formKey,
       child: Column(
         children: [
-          FutureBuilder(
-            future: _authProvider.getMyBalance(),
-            builder: (ctx, _balanceSnap) =>
-                (_balanceSnap.connectionState == ConnectionState.waiting)
-                    ? Text('Recalculating balance...')
-                    : Text(_balanceSnap.data.toStringAsFixed(2)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FutureBuilder(
+                future: _authProvider.getMyBalance(),
+                builder: (ctx, _balanceSnap) =>
+                    (_balanceSnap.connectionState == ConnectionState.waiting)
+                        ? Text('Recalculating balance...')
+                        : Text(_balanceSnap.data.toStringAsFixed(2)),
+              ),
+              IconButton(
+                icon: Icon(Icons.atm_outlined),
+                tooltip: 'Settle',
+                onPressed: () {
+                  SettleUp.show(context).then((_) {
+                    setState(() {
+                      _authProvider.getMyBalance();
+                    });
+                  });
+                },
+              ),
+            ],
           ),
           FutureBuilder(
             future: (people == null) ? _authProvider.getUsersToShare() : null,
