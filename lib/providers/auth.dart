@@ -6,10 +6,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'expense.dart';
+
 class Auth with ChangeNotifier {
   String _id;
   String _name;
   String _pic;
+  double _balance;
 
   String get id {
     return _id;
@@ -21,6 +24,10 @@ class Auth with ChangeNotifier {
 
   String get pic {
     return _pic;
+  }
+
+  double get balance {
+    return _balance;
   }
 
   Future<List> getUsersToShare() async {
@@ -47,6 +54,7 @@ class Auth with ChangeNotifier {
     _id = prefs.get('_id');
     _name = prefs.get('_name');
     _pic = prefs.get('_pic');
+    _balance = await getMyBalance(_id);
   }
 
   Future<String> getUserName(String id) async {
@@ -78,6 +86,54 @@ class Auth with ChangeNotifier {
     } else {
       return qSnap.docs[0].data();
     }
+  }
+
+  Future<double> getMyBalance(String _id) async {
+    List<Expense> _allMyExpenses = await Expense().getAllExpenses();
+    // TODO: filter settled expenses
+    var _balanceToSet = 0.0;
+
+    _allMyExpenses.forEach((e) {
+      if (e.paidByPersonId == _id) {
+        switch (e.split) {
+          case SPLIT.EQUALLY:
+            {
+              _balanceToSet += e.cost / 2;
+              break;
+            }
+          case SPLIT.ME_TOTAL:
+            {
+              _balanceToSet += e.cost;
+              break;
+            }
+          case SPLIT.OTHER_TOTAL:
+            {
+              _balanceToSet -= e.cost;
+              break;
+            }
+        }
+      } else if (e.splitWithPersonId == _id) {
+        switch (e.split) {
+          case SPLIT.EQUALLY:
+            {
+              _balanceToSet -= e.cost / 2;
+              break;
+            }
+          case SPLIT.ME_TOTAL:
+            {
+              _balanceToSet -= e.cost;
+              break;
+            }
+          case SPLIT.OTHER_TOTAL:
+            {
+              _balanceToSet += e.cost;
+              break;
+            }
+        }
+      }
+    });
+
+    return _balanceToSet;
   }
 
   Future<void> signIn() async {

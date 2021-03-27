@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/auth.dart';
-import '../../../providers/expense.dart';
 import '../../loading/main.dart';
 
 class UserInfoScreen extends StatelessWidget {
@@ -19,14 +18,7 @@ class UserInfoScreen extends StatelessWidget {
                 children: [
                   Text(authData.name),
                   Image.network(authData.pic),
-                  FutureBuilder(
-                    future: Provider.of<Expense>(context, listen: false)
-                        .getMyBalance(),
-                    builder: (ctx, expenseSnap) =>
-                        (expenseSnap.connectionState == ConnectionState.waiting)
-                            ? LoadingScreen()
-                            : Text(expenseSnap.data.toString()),
-                  ),
+                  Text(authData.balance.toString()),
                 ],
               );
             }),
