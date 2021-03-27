@@ -17,6 +17,7 @@ dependencies:
   cloud_firestore: ^1.0.1
   google_sign_in: ^5.0.0
   shared_preferences: ^2.0.3
+  flutter_slidable: ^0.5.7
 
 dev_dependencies:
   flutter_test:

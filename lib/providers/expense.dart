@@ -9,6 +9,7 @@ import 'categories.dart';
 enum SPLIT { EQUALLY, ME_TOTAL, OTHER_TOTAL }
 
 class Expense with ChangeNotifier {
+  String id;
   String description;
   double cost;
   DateTime when;
@@ -23,6 +24,7 @@ class Expense with ChangeNotifier {
   Map<String, String> splitWithPerson;
 
   Expense({
+    this.id,
     @required this.description,
     @required this.cost,
     @required this.when,
@@ -86,6 +88,7 @@ class Expense with ChangeNotifier {
     // create expenses and return
     List<Expense> _allExpenses = qSnap.docs.map((doc) {
       return Expense(
+          id: doc.id,
           description: doc['description'],
           cost: doc['cost'],
           when: DateTime.fromMillisecondsSinceEpoch(doc['when']),
@@ -130,5 +133,9 @@ class Expense with ChangeNotifier {
     });
 
     return _allExpenses;
+  }
+
+  void deleteExpense(expenseId) async {
+    await FirebaseFirestore.instance.doc('expenses/$expenseId').delete();
   }
 }
