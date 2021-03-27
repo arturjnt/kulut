@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/auth.dart';
+import 'settle_up.dart';
 
 class KulutAppBar extends StatelessWidget implements PreferredSizeWidget {
   final AppBar appBar;
@@ -21,7 +22,7 @@ class KulutAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: Icon(Icons.atm_outlined),
           tooltip: 'Settle',
           onPressed: () {
-            // TODO: Settle pop-up with settle_up screen - calling provider XXX? action settle
+            SettleUp.show(context);
           },
         ),
         IconButton(
