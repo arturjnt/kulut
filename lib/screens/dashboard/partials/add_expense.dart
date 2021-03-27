@@ -22,6 +22,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final _descriptionController = TextEditingController();
   final _costController = TextEditingController();
 
+  var people;
+
   @override
   void initState() {
     // _categories can't be accessed in the initializer
@@ -39,15 +41,15 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _authProvider = Provider.of<Auth>(context);
-    final _expenseProvider = Provider.of<Expense>(context);
+    final _authProvider = Provider.of<Auth>(context, listen: false);
+    final _expenseProvider = Provider.of<Expense>(context, listen: false);
 
     return Form(
       key: _formKey,
       child: Column(
         children: [
           FutureBuilder(
-            future: _authProvider.getUsersToShare(),
+            future: (people == null) ? _authProvider.getUsersToShare() : null,
             builder: (ctx, authSnap) {
               if (authSnap.connectionState == ConnectionState.waiting) {
                 return DropdownButton(
@@ -58,8 +60,12 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         .toList());
               }
 
+              if (people == null) {
+                people = authSnap.data;
+              }
+
               // Set default as first of the list
-              _shareWithWhomId = authSnap.data[0]['id'];
+              _shareWithWhomId = people[0]['id'];
 
               return DropdownButton<String>(
                 value: _shareWithWhomId,
@@ -68,7 +74,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     _shareWithWhomId = newValue;
                   });
                 },
-                items: authSnap.data.map<DropdownMenuItem<String>>((Map _user) {
+                items: people.map<DropdownMenuItem<String>>((Map _user) {
                   return DropdownMenuItem<String>(
                     value: _user['id'],
                     child: Row(
