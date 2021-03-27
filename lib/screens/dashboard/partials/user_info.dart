@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
 import '../../../providers/auth.dart';
+import '../../../providers/expense.dart';
 import '../../loading/main.dart';
 
 class UserInfoScreen extends StatelessWidget {
@@ -17,7 +19,14 @@ class UserInfoScreen extends StatelessWidget {
                 children: [
                   Text(authData.name),
                   Image.network(authData.pic),
-                  // TODO: calculate and get balance
+                  FutureBuilder(
+                    future: Provider.of<Expense>(context, listen: false)
+                        .getMyBalance(),
+                    builder: (ctx, expenseSnap) =>
+                        (expenseSnap.connectionState == ConnectionState.waiting)
+                            ? LoadingScreen()
+                            : Text(expenseSnap.data.toString()),
+                  ),
                 ],
               );
             }),

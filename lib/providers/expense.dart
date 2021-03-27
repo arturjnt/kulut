@@ -131,4 +131,15 @@ class Expense with ChangeNotifier {
 
     return _allExpenses;
   }
+
+  Future<double> getMyBalance() async {
+    List<Expense> _allMyExpenses = await getAllExpenses();
+    var _balance = 0.0;
+
+    _allMyExpenses.forEach((element) {
+      // TODO: calc my balance logic
+    });
+
+    return _balance;
+  }
 }
