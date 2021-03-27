@@ -73,6 +73,7 @@ class Expense with ChangeNotifier {
           paidByPersonId: doc['paidByPersonId'],
           splitWithPersonId: doc['splitWithPersonId'],
           categoryId: doc['categoryId'],
+          settled: doc['settled'],
           split: SPLIT.values.firstWhere(
             (e) => e.toString() == doc['split'],
           ));
