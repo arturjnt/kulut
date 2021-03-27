@@ -17,7 +17,7 @@ class UserInfoScreen extends StatelessWidget {
                 children: [
                   Text(authData.name),
                   Image.network(authData.pic),
-                  Text(authData.balance.toString()),
+                  // TODO: calculate and get balance
                 ],
               );
             }),

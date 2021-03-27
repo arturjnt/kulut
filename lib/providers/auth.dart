@@ -10,7 +10,6 @@ class Auth with ChangeNotifier {
   String _id;
   String _name;
   String _pic;
-  double _balance;
 
   String get id {
     return _id;
@@ -22,10 +21,6 @@ class Auth with ChangeNotifier {
 
   String get pic {
     return _pic;
-  }
-
-  double get balance {
-    return _balance;
   }
 
   Future<List> getUsersToShare() async {
@@ -52,7 +47,6 @@ class Auth with ChangeNotifier {
     _id = prefs.get('_id');
     _name = prefs.get('_name');
     _pic = prefs.get('_pic');
-    _balance = prefs.get('_balance');
   }
 
   Future<String> getUserName(String id) async {

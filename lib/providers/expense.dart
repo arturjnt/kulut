@@ -77,6 +77,7 @@ class Expense with ChangeNotifier {
     return _allExpenses;
   }
 
+  /// Helper function to transform ids into people's names
   Future<List<Map<String, String>>> _people(List<Expense> expenses) async {
     Set<String> _peopleIds = Set<String>();
     expenses.forEach((p) {
