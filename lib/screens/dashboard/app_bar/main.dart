@@ -18,6 +18,13 @@ class KulutAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text('Kulut'),
       actions: [
         IconButton(
+          icon: Icon(Icons.list),
+          tooltip: 'List View',
+          onPressed: () {
+            Navigator.pushNamed(context, '/ev-list');
+          },
+        ),
+        IconButton(
           icon: Icon(Icons.exit_to_app),
           tooltip: 'Logout',
           onPressed: () {

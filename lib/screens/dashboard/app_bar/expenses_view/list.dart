@@ -3,8 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../screens/loading/main.dart';
-import '../../providers/expense.dart';
+import '../../../../providers/expense.dart';
 
 class EVListScreen extends StatefulWidget {
   static const routeName = '/ev-list';

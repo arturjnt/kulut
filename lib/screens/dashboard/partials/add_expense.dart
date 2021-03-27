@@ -58,11 +58,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 builder: (ctx, _balanceSnap) =>
                     (_balanceSnap.connectionState == ConnectionState.waiting)
                         ? Text('Recalculating balance...')
-                        : Text(_balanceSnap.data.toStringAsFixed(2)),
+                        : Text('Balance: ${_balanceSnap.data.toStringAsFixed(2)}€'),
               ),
-              IconButton(
-                icon: Icon(Icons.atm_outlined),
-                tooltip: 'Settle',
+              SizedBox(width: 10),
+              ElevatedButton(
+                child: Text('Settle Up'),
                 onPressed: () {
                   SettleUp.show(context).then((_) {
                     setState(() {

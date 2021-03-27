@@ -10,8 +10,8 @@ import 'providers/expense.dart';
 
 import 'screens/auth/main.dart';
 import 'screens/dashboard/main.dart';
-import 'screens/expenses_view/graph.dart';
-import 'screens/expenses_view/list.dart';
+import 'screens/dashboard/app_bar/expenses_view/graph.dart';
+import 'screens/dashboard/app_bar/expenses_view/list.dart';
 
 void main() {
   runApp(MyApp());
