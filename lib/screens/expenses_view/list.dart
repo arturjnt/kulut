@@ -5,6 +5,19 @@ class EVListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.pie_chart),
+            tooltip: 'Go to Graphs',
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, '/ev-graph');
+            },
+          ),
+        ],
+      ),
+      body: Text('ev-list'),
+    );
   }
 }

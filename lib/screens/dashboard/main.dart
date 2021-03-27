@@ -22,6 +22,15 @@ class DashboardScreen extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 15, right: 10),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/ev-list');
+          },
+          child: Icon(Icons.list),
+        ),
+      ),
     );
   }
 }
