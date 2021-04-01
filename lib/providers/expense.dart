@@ -55,6 +55,10 @@ class Expense with ChangeNotifier {
     return _newExpense.data();
   }
 
+  Future<void> editExpense(Expense e) async {
+    await FirebaseFirestore.instance.doc('expenses/${e.id}').update(toMap(e));
+  }
+
   Future<List<Expense>> getAllExpenses() async {
     // get all expenses i paid or splitwithme
     final prefs = await SharedPreferences.getInstance();

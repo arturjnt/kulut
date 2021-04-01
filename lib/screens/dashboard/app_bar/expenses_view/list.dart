@@ -48,12 +48,13 @@ class _EVListScreenState extends State<EVListScreen> {
                       icon: Icons.edit,
                       onTap: () {
                         Navigator.pushNamed(
-                            context, EditExpenseScreen.routeName, arguments: e);
-                        //     .whenComplete(() {
-                        //   // setState(() {
-                        //   // TODO: expenses.removeAt(i);
-                        //   // });
-                        // });
+                                context, EditExpenseScreen.routeName,
+                                arguments: e)
+                            .whenComplete(() {
+                          setState(() {
+                            // Updated the screen with the edited expense
+                          });
+                        });
                       },
                     ),
                     IconSlideAction(

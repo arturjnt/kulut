@@ -178,6 +178,7 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     Expense _expenseToSubmit = Expense(
+                        id: e.id,
                         description: _descriptionController.text,
                         cost: double.parse(_costController.text),
                         when: _selectedDate,
@@ -186,22 +187,17 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
                         categoryId: _pickedCategoryId,
                         split: _pickedSPLIT);
 
-                    _expenseProvider.saveExpense(_expenseToSubmit);
+                    _expenseProvider.editExpense(_expenseToSubmit);
 
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Expense Saved!')),
+                      SnackBar(content: Text('Expense Edited!')),
                     );
 
                     // Clear form
-                    setState(() {
-                      _descriptionController.clear();
-                      _costController.clear();
-                      _selectedDate = DateTime.now();
-                      _pickedSPLIT = SPLIT.EQUALLY;
-                    });
+                    Navigator.pop(context);
                   }
                 },
-                child: Text('Submit'),
+                child: Text('Save Edit'),
               ),
             )
           ],
