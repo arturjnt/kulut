@@ -64,7 +64,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
               ElevatedButton(
                 child: Text('Settle Up'),
                 onPressed: () {
-                  SettleUp.show(context).then((_) {
+                  SettleUp.show(context, _shareWithWhomId).then((_) {
                     setState(() {
                       _authProvider.getMyBalance();
                     });

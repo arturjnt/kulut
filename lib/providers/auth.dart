@@ -88,16 +88,19 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> settle() async {
+  Future<void> settle(_settleWithWhomId) async {
     List<Expense> _allExpenses = await Expense().getAllExpenses();
     // filter settled expenses
     List<Expense> _allUnsettledExpenses =
-    _allExpenses.where((e) => e.settled == false).toList();
+        _allExpenses.where((e) => e.settled == false).toList();
 
     _allUnsettledExpenses.forEach((exp) {
-      FirebaseFirestore.instance
-          .doc('expenses/${exp.id}')
-          .update({'settled': true});
+      if (exp.splitWithPersonId == _settleWithWhomId ||
+          exp.paidByPersonId == _settleWithWhomId) {
+        FirebaseFirestore.instance
+            .doc('expenses/${exp.id}')
+            .update({'settled': true});
+      }
     });
     notifyListeners();
   }
