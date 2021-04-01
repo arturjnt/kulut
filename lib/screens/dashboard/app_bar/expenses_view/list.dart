@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kulut/screens/dashboard/app_bar/expenses_view/edit_expense.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../../providers/expense.dart';
+import 'edit_expense.dart';
 
 class EVListScreen extends StatefulWidget {
   static const routeName = '/ev-list';
@@ -48,7 +48,7 @@ class _EVListScreenState extends State<EVListScreen> {
                       icon: Icons.edit,
                       onTap: () {
                         Navigator.pushNamed(
-                            context, EditExpenseScreen.routeName);
+                            context, EditExpenseScreen.routeName, arguments: e);
                         //     .whenComplete(() {
                         //   // setState(() {
                         //   // TODO: expenses.removeAt(i);
