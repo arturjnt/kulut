@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kulut/screens/dashboard/app_bar/expenses_view/edit_expense.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -37,9 +38,24 @@ class _EVListScreenState extends State<EVListScreen> {
               Expense e = expenses[i];
 
               return Card(
+                key: Key(expenses[i].id),
                 child: Slidable(
                   actionPane: SlidableScrollActionPane(),
                   secondaryActions: [
+                    IconSlideAction(
+                      caption: 'Edit',
+                      color: Colors.yellow,
+                      icon: Icons.edit,
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, EditExpenseScreen.routeName);
+                        //     .whenComplete(() {
+                        //   // setState(() {
+                        //   // TODO: expenses.removeAt(i);
+                        //   // });
+                        // });
+                      },
+                    ),
                     IconSlideAction(
                       caption: 'Delete',
                       color: Colors.red,

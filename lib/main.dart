@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kulut/screens/dashboard/app_bar/expenses_view/edit_expense.dart';
 import 'package:kulut/screens/loading/main.dart';
 
 import 'package:provider/provider.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
           DashboardScreen.routeName: (ctx) => DashboardScreen(),
           EVGraphScreen.routeName: (ctx) => EVGraphScreen(),
           EVListScreen.routeName: (ctx) => EVListScreen(),
+          EditExpenseScreen.routeName: (ctx) => EditExpenseScreen(),
         },
       ),
     );
