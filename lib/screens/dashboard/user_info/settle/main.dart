@@ -22,31 +22,41 @@ class _SettleScreenState extends State<SettleScreen> {
       appBar: AppBar(),
       body: FutureBuilder(
           future: _authProvider.getUsersToShare(),
-          builder: (ctx, authSnap) {
-            if (authSnap.connectionState == ConnectionState.waiting)
+          builder: (ctx, peopleSnap) {
+            if (peopleSnap.connectionState == ConnectionState.waiting)
               return LoadingPeoplePlaceholder();
 
-            people = authSnap.data;
+            people = peopleSnap.data;
             _shareWithWhomId = people[0]['id'];
 
-            return DropdownButton<String>(
-                value: _shareWithWhomId,
-                onChanged: (String newValue) {
-                  setState(() {
-                    _shareWithWhomId = newValue;
-                  });
-                },
-                items: people.map<DropdownMenuItem<String>>((Map _user) {
-                  return DropdownMenuItem<String>(
-                    value: _user['id'],
-                    child: Row(
-                      children: [
-                        Image.network(_user['pic'], height: 20),
-                        Text(_user['name']),
-                      ],
-                    ),
-                  );
-                }).toList());
+            return Column(
+              children: [
+                DropdownButton<String>(
+                    value: _shareWithWhomId,
+                    onChanged: (String newValue) {
+                      setState(() {
+                        _shareWithWhomId = newValue;
+                      });
+                    },
+                    items: people.map<DropdownMenuItem<String>>((Map _user) {
+                      return DropdownMenuItem<String>(
+                        value: _user['id'],
+                        child: Row(
+                          children: [
+                            Image.network(_user['pic'], height: 20),
+                            Text(_user['name']),
+                          ],
+                        ),
+                      );
+                    }).toList()),
+                FutureBuilder(
+                    future: _authProvider.getMyBalance(_shareWithWhomId),
+                    builder: (ctx, balanceSnap) =>
+                        (balanceSnap.connectionState == ConnectionState.waiting)
+                            ? Text('Loading Balance...')
+                            : Text(balanceSnap.data.toString())),
+              ],
+            );
           }),
     );
   }

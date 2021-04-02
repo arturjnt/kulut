@@ -54,7 +54,7 @@ class Auth with ChangeNotifier {
     _id = prefs.get('_id');
     _name = prefs.get('_name');
     _pic = prefs.get('_pic');
-    _balance = await getMyBalance();
+    _balance = await getMyBalance(null);
   }
 
   Future<String> getUserName(String id) async {
@@ -105,7 +105,7 @@ class Auth with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<double> getMyBalance() async {
+  Future<double> getMyBalance(withWhomId) async {
     final prefs = await SharedPreferences.getInstance();
     String _idToSet = prefs.get('_id');
     List<Expense> _allExpenses = await Expense.provide().getAllExpenses();
@@ -113,6 +113,13 @@ class Auth with ChangeNotifier {
     List<Expense> _allUnsettledExpenses =
         _allExpenses.where((e) => e.settled == false).toList();
     var _balanceToSet = 0.0;
+
+    if (withWhomId != null) {
+      _allUnsettledExpenses = _allUnsettledExpenses.where((exp) {
+        return (exp.splitWithPersonId == withWhomId ||
+            exp.paidByPersonId == withWhomId);
+      }).toList();
+    }
 
     _allUnsettledExpenses.forEach((e) {
       if (e.paidByPersonId == _idToSet) {
