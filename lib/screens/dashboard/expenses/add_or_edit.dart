@@ -54,12 +54,14 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
           }
         case MODE.EDIT:
           {
-            _descriptionController.text = e.description;
-            _costController.text = e.cost.toString();
-            _pickedSPLIT = e.split;
-            _selectedDate = e.when;
-            _pickedCategoryId = e.categoryId;
-            _shareWithWhomId = e.splitWithPersonId;
+            setState(() {
+              _descriptionController.text = e.description;
+              _costController.text = e.cost.toString();
+              _pickedSPLIT = e.split;
+              _selectedDate = e.when;
+              _pickedCategoryId = e.categoryId;
+              _shareWithWhomId = e.splitWithPersonId;
+            });
             break;
           }
       }
