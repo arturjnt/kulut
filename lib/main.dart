@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           value: Auth(),
         ),
         ChangeNotifierProvider.value(
-          value: Expense(),
+          value: Expense.provide(),
         ),
       ],
       child: MaterialApp(

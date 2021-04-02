@@ -89,7 +89,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> settle(_settleWithWhomId) async {
-    List<Expense> _allExpenses = await Expense().getAllExpenses();
+    List<Expense> _allExpenses = await Expense.provide().getAllExpenses();
     // filter settled expenses
     List<Expense> _allUnsettledExpenses =
         _allExpenses.where((e) => e.settled == false).toList();
@@ -108,7 +108,7 @@ class Auth with ChangeNotifier {
   Future<double> getMyBalance() async {
     final prefs = await SharedPreferences.getInstance();
     String _idToSet = prefs.get('_id');
-    List<Expense> _allExpenses = await Expense().getAllExpenses();
+    List<Expense> _allExpenses = await Expense.provide().getAllExpenses();
     // filter settled expenses
     List<Expense> _allUnsettledExpenses =
         _allExpenses.where((e) => e.settled == false).toList();

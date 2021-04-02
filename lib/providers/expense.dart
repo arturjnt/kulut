@@ -23,6 +23,8 @@ class Expense with ChangeNotifier {
   Map<String, String> paidByPerson;
   Map<String, String> splitWithPerson;
 
+  Expense.provide();
+
   Expense({
     this.id,
     @required this.description,
