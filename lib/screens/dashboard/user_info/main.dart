@@ -33,9 +33,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                         Navigator.of(context)
                             .pushNamed(SettleScreen.routeName)
                             .whenComplete(() {
-                          setState(() {
-                            // Gets new balance
-                          });
+                          // Update Balance
+                          setState(() {});
                         });
                       },
                       child: Text('Settle'))

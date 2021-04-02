@@ -6,9 +6,14 @@ import 'user_info/main.dart';
 import 'expenses/graph.dart';
 import 'expenses/add_or_edit.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   static const routeName = '/dashboard';
 
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +31,12 @@ class DashboardScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context).pushNamed(AddOrEditScreen.routeName);
+          Navigator.of(context)
+              .pushNamed(AddOrEditScreen.routeName)
+              .whenComplete(() {
+                // Update Balance
+            setState(() {});
+          });
         },
       ),
     );
