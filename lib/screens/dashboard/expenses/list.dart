@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../providers/expense.dart';
+import 'add_or_edit.dart';
 
 class EVListScreen extends StatefulWidget {
   static const routeName = '/ev-list';
@@ -39,14 +40,13 @@ class _EVListScreenState extends State<EVListScreen> {
                       icon: Icons.edit,
                       onTap: () {
                         // TODO: import '../../expenses/edit_expense.dart';
-                        //  Navigator.pushNamed(
-                        //         context, EditExpenseScreen.routeName,
-                        //         arguments: e)
-                        //     .whenComplete(() {
-                        //   setState(() {
-                        //     // Updated the screen with the edited expense
-                        //   });
-                        // });
+                        Navigator.pushNamed(context, AddOrEditScreen.routeName,
+                                arguments: e)
+                            .whenComplete(() {
+                          setState(() {
+                            // Updated the screen with the edited expense
+                          });
+                        });
                       },
                     ),
                     IconSlideAction(

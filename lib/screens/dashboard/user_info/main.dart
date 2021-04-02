@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kulut/screens/dashboard/user_info/settle/main.dart';
 
 import 'package:provider/provider.dart';
 
 import '../../../providers/auth.dart';
 import '../../loading/main.dart';
+import 'settle/main.dart';
 
 class UserInfoScreen extends StatefulWidget {
   @override

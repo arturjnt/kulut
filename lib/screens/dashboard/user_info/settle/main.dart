@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kulut/screens/dashboard/user_info/settle/loading_people_placeholder.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../providers/auth.dart';
+import 'loading_people_placeholder.dart';
 
 class SettleScreen extends StatefulWidget {
   static const routeName = '/settle';
@@ -59,7 +59,7 @@ class _SettleScreenState extends State<SettleScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    // TODO: Call settle and go back and update
+                    // Call settle and go back and update
                     await _authProvider.settle(_shareWithWhomId);
                     Navigator.of(context).pop();
                   },
