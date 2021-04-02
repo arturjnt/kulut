@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kulut/screens/dashboard/expenses/add_or_edit.dart';
-import 'package:kulut/screens/dashboard/expenses/list.dart';
-import 'package:kulut/screens/loading/main.dart';
 
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,6 +9,10 @@ import 'providers/expense.dart';
 
 import 'screens/auth/main.dart';
 import 'screens/dashboard/main.dart';
+import 'screens/dashboard/expenses/add_or_edit.dart';
+import 'screens/dashboard/expenses/list.dart';
+import 'screens/dashboard/user_info/settle/main.dart';
+import 'screens/loading/main.dart';
 
 void main() {
   runApp(MyApp());
@@ -59,7 +60,8 @@ class MyApp extends StatelessWidget {
           AuthScreen.routeName: (ctx) => AuthScreen(),
           DashboardScreen.routeName: (ctx) => DashboardScreen(),
           EVListScreen.routeName: (ctx) => EVListScreen(),
-          AddOrEdit.routeName: (ctx) => AddOrEdit(),
+          AddOrEditScreen.routeName: (ctx) => AddOrEditScreen(),
+          SettleScreen.routeName: (ctx) => SettleScreen(),
         },
       ),
     );

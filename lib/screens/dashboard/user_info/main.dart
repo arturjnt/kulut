@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kulut/screens/dashboard/user_info/settle/main.dart';
 
 import 'package:provider/provider.dart';
 
-import '../../providers/auth.dart';
-import '../loading/main.dart';
+import '../../../providers/auth.dart';
+import '../../loading/main.dart';
 
 class UserInfoScreen extends StatelessWidget {
   @override
@@ -22,6 +23,9 @@ class UserInfoScreen extends StatelessWidget {
                     ],
                   ),
                   Text(authData.balance.toString()),
+                  ElevatedButton(onPressed: (){
+                    Navigator.of(context).pushNamed(SettleScreen.routeName);
+                  }, child: Text('Settle'))
                 ],
               );
             }),

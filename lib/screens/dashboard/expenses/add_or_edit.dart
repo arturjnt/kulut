@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AddOrEdit extends StatefulWidget {
+class AddOrEditScreen extends StatefulWidget {
   static const routeName = '/add-or-edit';
 
   @override
-  _AddOrEditState createState() => _AddOrEditState();
+  _AddOrEditScreenState createState() => _AddOrEditScreenState();
 }
 
-class _AddOrEditState extends State<AddOrEdit> {
+class _AddOrEditScreenState extends State<AddOrEditScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
