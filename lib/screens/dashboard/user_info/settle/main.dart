@@ -32,29 +32,37 @@ class _SettleScreenState extends State<SettleScreen> {
             return Column(
               children: [
                 DropdownButton<String>(
-                    value: _shareWithWhomId,
-                    onChanged: (String newValue) {
-                      setState(() {
-                        _shareWithWhomId = newValue;
-                      });
-                    },
-                    items: people.map<DropdownMenuItem<String>>((Map _user) {
-                      return DropdownMenuItem<String>(
-                        value: _user['id'],
-                        child: Row(
-                          children: [
-                            Image.network(_user['pic'], height: 20),
-                            Text(_user['name']),
-                          ],
-                        ),
-                      );
-                    }).toList()),
+                  value: _shareWithWhomId,
+                  onChanged: (String newValue) {
+                    setState(() {
+                      _shareWithWhomId = newValue;
+                    });
+                  },
+                  items: people.map<DropdownMenuItem<String>>((Map _user) {
+                    return DropdownMenuItem<String>(
+                      value: _user['id'],
+                      child: Row(
+                        children: [
+                          Image.network(_user['pic'], height: 20),
+                          Text(_user['name']),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
                 FutureBuilder(
-                    future: _authProvider.getMyBalance(_shareWithWhomId),
-                    builder: (ctx, balanceSnap) =>
-                        (balanceSnap.connectionState == ConnectionState.waiting)
-                            ? Text('Loading Balance...')
-                            : Text(balanceSnap.data.toString())),
+                  future: _authProvider.getMyBalance(_shareWithWhomId),
+                  builder: (ctx, balanceSnap) =>
+                      (balanceSnap.connectionState == ConnectionState.waiting)
+                          ? Text('Loading Balance...')
+                          : Text(balanceSnap.data.toString()),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // TODO: Call settle and go back and update
+                  },
+                  child: Text('Settle'),
+                )
               ],
             );
           }),
