@@ -27,7 +27,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                       if (authData.pic != null) Image.network(authData.pic),
                     ],
                   ),
-                  Text(authData.balance.toString()),
+                  Text(authData.balance.toStringAsFixed(2)),
                   ElevatedButton(
                       onPressed: () {
                         Navigator.of(context)

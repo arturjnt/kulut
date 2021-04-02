@@ -55,7 +55,7 @@ class _SettleScreenState extends State<SettleScreen> {
                   builder: (ctx, balanceSnap) =>
                       (balanceSnap.connectionState == ConnectionState.waiting)
                           ? Text('Loading Balance...')
-                          : Text(balanceSnap.data.toString()),
+                          : Text(balanceSnap.data.toStringAsFixed(2)),
                 ),
                 ElevatedButton(
                   onPressed: () {
