@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../providers/auth.dart';
 import '../../../providers/expense.dart';
 import '../../../providers/categories.dart';
 
@@ -34,6 +36,9 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _authProvider = Provider.of<Auth>(context);
+    final _expenseProvider = Provider.of<Expense>(context);
+
     final Expense e = ModalRoute.of(context).settings.arguments;
 
     MODE _mode = (e == null) ? MODE.ADD : MODE.EDIT;
