@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kulut/screens/dashboard/expenses/graph.dart';
 
 import '../app_bar/main.dart';
 import 'user_info.dart';
@@ -15,6 +16,7 @@ class DashboardScreen extends StatelessWidget {
           child: Column(
             children: [
               UserInfoScreen(),
+              EVGraphScreen(),
             ],
           ),
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kulut/screens/dashboard/expenses/list.dart';
 import 'package:kulut/screens/loading/main.dart';
 
 import 'package:provider/provider.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         routes: {
           AuthScreen.routeName: (ctx) => AuthScreen(),
           DashboardScreen.routeName: (ctx) => DashboardScreen(),
+          EVListScreen.routeName: (ctx) => EVListScreen(),
         },
       ),
     );
