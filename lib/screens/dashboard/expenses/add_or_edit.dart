@@ -29,6 +29,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
   SPLIT _pickedSPLIT = SPLIT.EQUALLY;
   DateTime _selectedDate = DateTime.now();
   int _pickedCategoryId = 1;
+  String _modeToPrint = 'add';
 
   // Null / not initialized variables
   String _shareWithWhomId;
@@ -37,7 +38,6 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
   // Init State Variables
   Expense e;
   MODE _mode;
-  String _modeToPrint;
 
   @override
   void initState() {
