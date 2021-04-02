@@ -58,10 +58,28 @@ class _SettleScreenState extends State<SettleScreen> {
                           : Text(balanceSnap.data.toString()),
                 ),
                 ElevatedButton(
-                  onPressed: () async {
-                    // Call settle and go back and update
-                    await _authProvider.settle(_shareWithWhomId);
-                    Navigator.of(context).pop();
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: Text("Are you sure?"),
+                        actions: [
+                          TextButton(
+                            child: Text('Cancel'),
+                            onPressed: () => Navigator.of(context).pop(false),
+                          ),
+                          TextButton(
+                            child: Text('Yes'),
+                            onPressed: () async {
+                              // Call settle and go back and update
+                              await _authProvider.settle(_shareWithWhomId);
+                              Navigator.of(context).pop(true);
+                            },
+                          )
+                        ],
+                      ),
+                    ).then((popAgain) =>
+                        (popAgain) ? Navigator.of(context).pop() : null);
                   },
                   child: Text('Settle'),
                 )
