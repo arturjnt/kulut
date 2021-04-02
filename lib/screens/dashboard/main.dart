@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_bar/main.dart';
+import 'user_info.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const routeName = '/dashboard';
@@ -13,7 +14,7 @@ class DashboardScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // UserInfoScreen(),
+              UserInfoScreen(),
             ],
           ),
         ),
