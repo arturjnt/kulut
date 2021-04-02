@@ -10,9 +10,6 @@ import 'providers/expense.dart';
 
 import 'screens/auth/main.dart';
 import 'screens/dashboard/main.dart';
-import 'screens/dashboard/app_bar/expenses_view/graph.dart';
-import 'screens/dashboard/app_bar/expenses_view/list.dart';
-import 'screens/dashboard/expenses/edit_expense.dart';
 
 void main() {
   runApp(MyApp());
@@ -59,9 +56,6 @@ class MyApp extends StatelessWidget {
         routes: {
           AuthScreen.routeName: (ctx) => AuthScreen(),
           DashboardScreen.routeName: (ctx) => DashboardScreen(),
-          EVGraphScreen.routeName: (ctx) => EVGraphScreen(),
-          EVListScreen.routeName: (ctx) => EVListScreen(),
-          EditExpenseScreen.routeName: (ctx) => EditExpenseScreen(),
         },
       ),
     );

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import '../../../providers/auth.dart';
+import '../../providers/auth.dart';
 
 class KulutAppBar extends StatelessWidget implements PreferredSizeWidget {
   final AppBar appBar;
-  final Function runSetState;
 
-  const KulutAppBar({Key key, this.appBar, this.runSetState}) : super(key: key);
+  const KulutAppBar({Key key, this.appBar}) : super(key: key);
 
   @override
   Size get preferredSize => new Size.fromHeight(appBar.preferredSize.height);
@@ -18,13 +17,6 @@ class KulutAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text('Kulut'),
       actions: [
-        IconButton(
-          icon: Icon(Icons.list),
-          tooltip: 'List View',
-          onPressed: () {
-            Navigator.pushNamed(context, '/ev-list').whenComplete(runSetState);
-          },
-        ),
         IconButton(
           icon: Icon(Icons.exit_to_app),
           tooltip: 'Logout',
