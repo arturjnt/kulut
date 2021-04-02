@@ -4,6 +4,7 @@ import '../app_bar/main.dart';
 import 'user_info/main.dart';
 
 import 'expenses/graph.dart';
+import 'expenses/list.dart';
 import 'expenses/add_or_edit.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -23,6 +24,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             children: [
               UserInfoScreen(),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(EVListScreen.routeName)
+                      .whenComplete(() {
+                    // Update Balance
+                    setState(() {});
+                  });
+                },
+                child: Text('Check the list'),
+              ),
               EVGraphScreen(),
             ],
           ),
@@ -34,7 +46,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Navigator.of(context)
               .pushNamed(AddOrEditScreen.routeName)
               .whenComplete(() {
-                // Update Balance
+            // Update Balance
             setState(() {});
           });
         },

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'list.dart';
 
 class EVGraphScreen extends StatefulWidget {
   @override
@@ -13,17 +12,6 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
     return Column(
       children: [
         Text('ev-graph'),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context)
-                .pushNamed(EVListScreen.routeName)
-                .whenComplete(() {
-                  // Update Balance
-              setState(() {});
-            });
-          },
-          child: Text('Check the list'),
-        )
       ],
     );
   }
