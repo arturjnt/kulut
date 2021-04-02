@@ -58,8 +58,10 @@ class _SettleScreenState extends State<SettleScreen> {
                           : Text(balanceSnap.data.toString()),
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // TODO: Call settle and go back and update
+                    await _authProvider.settle(_shareWithWhomId);
+                    Navigator.of(context).pop();
                   },
                   child: Text('Settle'),
                 )

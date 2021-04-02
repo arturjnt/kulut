@@ -6,7 +6,12 @@ import 'package:provider/provider.dart';
 import '../../../providers/auth.dart';
 import '../../loading/main.dart';
 
-class UserInfoScreen extends StatelessWidget {
+class UserInfoScreen extends StatefulWidget {
+  @override
+  _UserInfoScreenState createState() => _UserInfoScreenState();
+}
+
+class _UserInfoScreenState extends State<UserInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -23,9 +28,17 @@ class UserInfoScreen extends StatelessWidget {
                     ],
                   ),
                   Text(authData.balance.toString()),
-                  ElevatedButton(onPressed: (){
-                    Navigator.of(context).pushNamed(SettleScreen.routeName);
-                  }, child: Text('Settle'))
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(SettleScreen.routeName)
+                            .whenComplete(() {
+                          setState(() {
+                            // Gets new balance
+                          });
+                        });
+                      },
+                      child: Text('Settle'))
                 ],
               );
             }),
