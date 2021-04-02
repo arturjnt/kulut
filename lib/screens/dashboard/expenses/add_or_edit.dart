@@ -34,6 +34,39 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
   String _shareWithWhomId;
   List<Map> people;
 
+  // Init State Variables
+  Expense e;
+  MODE _mode;
+  String _modeToPrint;
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      e = ModalRoute.of(context).settings.arguments;
+
+      _mode = (e == null) ? MODE.ADD : MODE.EDIT;
+      _modeToPrint = _mode.toString().substring(5).toLowerCase();
+
+      switch (_mode) {
+        case MODE.ADD:
+          {
+            break;
+          }
+        case MODE.EDIT:
+          {
+            _descriptionController.text = e.description;
+            _costController.text = e.cost.toString();
+            _pickedSPLIT = e.split;
+            _selectedDate = e.when;
+            _pickedCategoryId = e.categoryId;
+            _shareWithWhomId = e.splitWithPersonId;
+            break;
+          }
+      }
+    });
+    super.initState();
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -46,28 +79,6 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
   Widget build(BuildContext context) {
     final _authProvider = Provider.of<Auth>(context);
     final _expenseProvider = Provider.of<Expense>(context);
-
-    final Expense e = ModalRoute.of(context).settings.arguments;
-
-    MODE _mode = (e == null) ? MODE.ADD : MODE.EDIT;
-    String _modeToPrint = _mode.toString().substring(5).toLowerCase();
-
-    switch (_mode) {
-      case MODE.ADD:
-        {
-          break;
-        }
-      case MODE.EDIT:
-        {
-          _descriptionController.text = e.description;
-          _costController.text = e.cost.toString();
-          _pickedSPLIT = e.split;
-          _selectedDate = e.when;
-          _pickedCategoryId = e.categoryId;
-          _shareWithWhomId = e.splitWithPersonId;
-          break;
-        }
-    }
 
     return Scaffold(
       appBar: AppBar(),
@@ -227,7 +238,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                     Navigator.of(context).pop();
                   }
                 },
-                child: Text('${_modeToPrint.capitalize()}'),
+                child: Text('${_modeToPrint.toString().capitalize()}'),
               ),
             )
           ],
