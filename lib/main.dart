@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kulut/screens/dashboard/app_bar/expenses_view/edit_expense.dart';
 import 'package:kulut/screens/loading/main.dart';
 
 import 'package:provider/provider.dart';
@@ -13,6 +12,7 @@ import 'screens/auth/main.dart';
 import 'screens/dashboard/main.dart';
 import 'screens/dashboard/app_bar/expenses_view/graph.dart';
 import 'screens/dashboard/app_bar/expenses_view/list.dart';
+import 'screens/dashboard/expenses/edit_expense.dart';
 
 void main() {
   runApp(MyApp());

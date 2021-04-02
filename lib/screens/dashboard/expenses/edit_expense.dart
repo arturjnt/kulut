@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../providers/auth.dart';
-import '../../../../providers/categories.dart';
-import '../../../../providers/expense.dart';
+import '../../../providers/auth.dart';
+import '../../../providers/categories.dart';
+import '../../../providers/expense.dart';
 
 class EditExpenseScreen extends StatefulWidget {
   static const routeName = '/edit-expense';

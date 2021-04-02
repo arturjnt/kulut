@@ -5,7 +5,7 @@ import '../../../providers/auth.dart';
 import '../../../providers/categories.dart';
 import '../../../providers/expense.dart';
 
-import 'settle_up.dart';
+import '../partials/settle_up.dart';
 
 class AddExpenseScreen extends StatefulWidget {
   @override

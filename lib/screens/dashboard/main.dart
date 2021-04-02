@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'app_bar/main.dart';
-import 'partials/add_expense.dart';
+import 'expenses/add_expense.dart';
 import 'partials/user_info.dart';
 
 class DashboardScreen extends StatefulWidget {
