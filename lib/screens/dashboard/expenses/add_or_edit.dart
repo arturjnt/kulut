@@ -68,7 +68,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
           break;
         }
     }
-//TODO: editing dropdowns resets form
+
     return Scaffold(
       appBar: AppBar(),
       body: Form(
