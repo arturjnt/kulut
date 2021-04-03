@@ -20,25 +20,28 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       builder: (_, snap) => snap.connectionState == ConnectionState.waiting
           ? LoadingScreen()
           : Consumer<Auth>(builder: (ctx, authData, _) {
-              return Card(
-                child: ListTile(
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(50.0),
-                    child: Image.network(authData.pic, width: 50),
-                  ),
-                  title: Text(authData.name),
-                  subtitle: Text(
-                      'Total balance: ${authData.balance.toStringAsFixed(2)}'),
-                  trailing: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(SettleScreen.routeName)
-                          .whenComplete(() {
-                        // Update Balance
-                        setState(() {});
-                      });
-                    },
-                    child: Text('Settle'),
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 16),
+                child: Card(
+                  child: ListTile(
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(50.0),
+                      child: Image.network(authData.pic, width: 50),
+                    ),
+                    title: Text(authData.name),
+                    subtitle: Text(
+                        'Total balance: ${authData.balance.toStringAsFixed(2)}'),
+                    trailing: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(SettleScreen.routeName)
+                            .whenComplete(() {
+                          // Update Balance
+                          setState(() {});
+                        });
+                      },
+                      child: Text('Settle'),
+                    ),
                   ),
                 ),
               );
