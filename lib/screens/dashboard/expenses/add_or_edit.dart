@@ -192,12 +192,16 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                     items: SPLIT.values
                         .map<DropdownMenuItem<SPLIT>>((SPLIT _split) {
                       return DropdownMenuItem<SPLIT>(
-                          value: _split, child: Text(_split.toString()));
+                        value: _split,
+                        child: Text(
+                          Expense.getSplitTypeOptions(_split).capitalize(),
+                        ),
+                      );
                     }).toList(),
                   ),
                   // Date
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 8, bottom: 16),
                     child: TextButton(
                       style: ButtonStyle(
                         shape:
@@ -276,14 +280,17 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                           Navigator.of(context).pop();
                         }
                       },
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Text(
-                            '${_modeToPrint.toString().capitalize()}',
-                            textAlign: TextAlign.center,
-                          )),
-                        ],
+                      child: Container(
+                        height: 50,
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Text(
+                              '${_modeToPrint.toString().capitalize()}',
+                              textAlign: TextAlign.center,
+                            )),
+                          ],
+                        ),
                       ),
                     ),
                   )

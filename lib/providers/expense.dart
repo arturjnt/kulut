@@ -144,4 +144,41 @@ class Expense with ChangeNotifier {
   void deleteExpense(expenseId) async {
     await FirebaseFirestore.instance.doc('expenses/$expenseId').delete();
   }
+
+  static String getSplitType(Expense e) {
+    var _sentence = '';
+    String _paidBy = e.paidByPerson[e.paidByPersonId];
+    String _splitWith = e.splitWithPerson[e.splitWithPersonId];
+
+    switch (e.split) {
+      case SPLIT.EQUALLY:
+        {
+          _sentence =
+              '$_paidBy paid half of ${e.cost.toString()}€ with $_splitWith';
+          break;
+        }
+      case SPLIT.ME_TOTAL:
+        {
+          _sentence = '$_splitWith owes $_paidBy: ${e.cost.toString()}€';
+          break;
+        }
+      case SPLIT.OTHER_TOTAL:
+        {
+          _sentence = '$_paidBy owes $_splitWith: ${e.cost.toString()}€';
+          break;
+        }
+    }
+    return _sentence;
+  }
+
+  static String getSplitTypeOptions(SPLIT s) {
+    return s
+        .toString()
+        .substring(6)
+        .replaceFirst('_', ' ')
+        .replaceFirst('EQ', 'We\'ll split it eq')
+        .replaceFirst('ME', 'i have paid the')
+        .replaceFirst('OTHER', 'the person I\'m splitting with, has paid the')
+        .toLowerCase();
+  }
 }

@@ -89,7 +89,7 @@ class _EVListScreenState extends State<EVListScreen> {
                         Text(e.description),
                       ],
                     ),
-                    subtitle: Text(_getSubtitle(e)),
+                    subtitle: Text(Expense.getSplitType(e)),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -106,31 +106,5 @@ class _EVListScreenState extends State<EVListScreen> {
         },
       ),
     );
-  }
-
-  String _getSubtitle(Expense e) {
-    var _sentence = '';
-    String _paidBy = e.paidByPerson[e.paidByPersonId];
-    String _splitWith = e.splitWithPerson[e.splitWithPersonId];
-
-    switch (e.split) {
-      case SPLIT.EQUALLY:
-        {
-          _sentence =
-              '$_paidBy paid half of ${e.cost.toString()}€ with $_splitWith';
-          break;
-        }
-      case SPLIT.ME_TOTAL:
-        {
-          _sentence = '$_splitWith owes $_paidBy: ${e.cost.toString()}€';
-          break;
-        }
-      case SPLIT.OTHER_TOTAL:
-        {
-          _sentence = '$_paidBy owes $_splitWith: ${e.cost.toString()}€';
-          break;
-        }
-    }
-    return _sentence;
   }
 }
