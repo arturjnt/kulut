@@ -61,15 +61,32 @@ class _EVListScreenState extends State<EVListScreen> {
                     )
                   ],
                   child: ListTile(
-                    leading: Icon(
-                      e.category.icon,
-                      color: e.category.color,
+                    leading: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Theme.of(context).primaryColor),
+                          child: Icon(
+                            e.category.icon,
+                            color: e.category.color,
+                          ),
+                        ),
+                      ],
                     ),
                     title: Text(
                         e.description + ' | settled: ' + e.settled.toString()),
                     subtitle: Text(_getSubtitle(e)),
-                    trailing:
-                        Text(DateFormat('HH:mm dd/MM/yyyy').format(e.when)),
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(DateFormat('HH:mm\ndd/MM/yyyy').format(e.when),
+                            textAlign: TextAlign.right),
+                      ],
+                    ),
                     isThreeLine: true,
                   ),
                 ),
