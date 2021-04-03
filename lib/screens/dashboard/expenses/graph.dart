@@ -11,7 +11,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('ev-graph'),
+        Text('ev-graph will be here', style: TextStyle(color: Colors.grey[700]),),
       ],
     );
   }
