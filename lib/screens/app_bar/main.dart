@@ -16,6 +16,7 @@ class KulutAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text('Kulut'),
+      backgroundColor: Theme.of(context).colorScheme.primary,
       actions: [
         IconButton(
           icon: Icon(Icons.exit_to_app),

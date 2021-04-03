@@ -33,7 +33,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Kulut',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.green,
+          brightness: Brightness.dark,
         ),
         home: FutureBuilder(
             // Initializes firebase when you enter and are logged in
