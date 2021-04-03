@@ -18,8 +18,6 @@ class _SettleScreenState extends State<SettleScreen> {
     String _shareWithWhomId;
     List<Map> people;
 
-    final double height = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: AppBar(title: Text('Settle')),
       body: FutureBuilder(
@@ -37,10 +35,9 @@ class _SettleScreenState extends State<SettleScreen> {
                       ConnectionState.waiting)
                   ? SizedBox()
                   : Container(
-                      height: (height - (AppBar().preferredSize.height) * 2),
+                      padding: EdgeInsets.only(top: 50),
                       width: double.infinity,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           DropdownButton<String>(
                             value: _shareWithWhomId,
