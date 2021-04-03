@@ -110,59 +110,50 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Row(children: [
-                    Expanded(
-                      child: DropdownButton<String>(
-                        value: _shareWithWhomId,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            _shareWithWhomId = newValue;
-                          });
-                        },
-                        items:
-                            people.map<DropdownMenuItem<String>>((Map _user) {
-                          return DropdownMenuItem<String>(
-                            value: _user['id'],
-                            child: Row(
-                              children: [
-                                Image.network(_user['pic'], height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(_user['name']),
-                                ),
-                              ],
+                  DropdownButton<String>(
+                    isExpanded: true,
+                    value: _shareWithWhomId,
+                    onChanged: (String newValue) {
+                      setState(() {
+                        _shareWithWhomId = newValue;
+                      });
+                    },
+                    items: people.map<DropdownMenuItem<String>>((Map _user) {
+                      return DropdownMenuItem<String>(
+                        value: _user['id'],
+                        child: Row(
+                          children: [
+                            Image.network(_user['pic'], height: 20),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(_user['name']),
                             ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ]),
-                  //Category picker
-                  Row(
-                    children: [
-                      Expanded(
-                        child: DropdownButton<int>(
-                          value: _pickedCategoryId,
-                          onChanged: (int newValue) {
-                            setState(() {
-                              _pickedCategoryId = newValue;
-                            });
-                          },
-                          items: _categories
-                              .map<DropdownMenuItem<int>>((Category _cat) {
-                            return DropdownMenuItem<int>(
-                              value: _cat.id,
-                              child: Row(
-                                children: [
-                                  Icon(_cat.icon, color: _cat.color),
-                                  Text(_cat.name),
-                                ],
-                              ),
-                            );
-                          }).toList(),
+                          ],
                         ),
-                      ),
-                    ],
+                      );
+                    }).toList(),
+                  ),
+                  //Category picker
+                  DropdownButton<int>(
+                    isExpanded: true,
+                    value: _pickedCategoryId,
+                    onChanged: (int newValue) {
+                      setState(() {
+                        _pickedCategoryId = newValue;
+                      });
+                    },
+                    items:
+                        _categories.map<DropdownMenuItem<int>>((Category _cat) {
+                      return DropdownMenuItem<int>(
+                        value: _cat.id,
+                        child: Row(
+                          children: [
+                            Icon(_cat.icon, color: _cat.color),
+                            Text(_cat.name),
+                          ],
+                        ),
+                      );
+                    }).toList(),
                   ),
                   // Description
                   TextFormField(
@@ -189,24 +180,19 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                     },
                   ),
                   // Split
-                  Row(
-                    children: [
-                      Expanded(
-                        child: DropdownButton<SPLIT>(
-                          value: _pickedSPLIT,
-                          onChanged: (SPLIT newValue) {
-                            setState(() {
-                              _pickedSPLIT = newValue;
-                            });
-                          },
-                          items: SPLIT.values
-                              .map<DropdownMenuItem<SPLIT>>((SPLIT _split) {
-                            return DropdownMenuItem<SPLIT>(
-                                value: _split, child: Text(_split.toString()));
-                          }).toList(),
-                        ),
-                      ),
-                    ],
+                  DropdownButton<SPLIT>(
+                    isExpanded: true,
+                    value: _pickedSPLIT,
+                    onChanged: (SPLIT newValue) {
+                      setState(() {
+                        _pickedSPLIT = newValue;
+                      });
+                    },
+                    items: SPLIT.values
+                        .map<DropdownMenuItem<SPLIT>>((SPLIT _split) {
+                      return DropdownMenuItem<SPLIT>(
+                          value: _split, child: Text(_split.toString()));
+                    }).toList(),
                   ),
                   // Date
                   TextButton(
