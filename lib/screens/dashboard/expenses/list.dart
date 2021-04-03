@@ -51,6 +51,7 @@ class _EVListScreenState extends State<EVListScreen> {
                     IconSlideAction(
                       caption: 'Delete',
                       color: Colors.red,
+                      foregroundColor: Colors.black,
                       icon: Icons.delete,
                       onTap: () {
                         e.deleteExpense(e.id);
