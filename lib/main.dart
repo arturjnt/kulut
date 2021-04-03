@@ -11,7 +11,7 @@ import 'screens/auth/main.dart';
 import 'screens/dashboard/main.dart';
 import 'screens/dashboard/expenses/add_or_edit.dart';
 import 'screens/dashboard/expenses/list.dart';
-import 'screens/dashboard/user_info/settle/main.dart';
+import 'screens/dashboard/user_info/settle.dart';
 import 'screens/loading/main.dart';
 
 void main() {

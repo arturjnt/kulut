@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../providers/auth.dart';
 import '../../loading/main.dart';
-import 'settle/main.dart';
+import 'settle.dart';
 
 class UserInfoScreen extends StatefulWidget {
   @override

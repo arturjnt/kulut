@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import 'capitalize.dart';
 
@@ -195,23 +196,48 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                     }).toList(),
                   ),
                   // Date
-                  TextButton(
-                    onPressed: () {
-                      showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now().subtract(Duration(days: 365)),
-                        lastDate: DateTime.now(),
-                      ).then((_date) {
-                        setState(() {
-                          if (_date == null) {
-                            _date = _selectedDate = DateTime.now();
-                          }
-                          _selectedDate = _date;
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate:
+                              DateTime.now().subtract(Duration(days: 365)),
+                          lastDate: DateTime.now(),
+                        ).then((_date) {
+                          setState(() {
+                            if (_date == null) {
+                              _date = _selectedDate = DateTime.now();
+                            }
+                            _selectedDate = _date;
+                          });
                         });
-                      });
-                    },
-                    child: Text('pick date : ' + _selectedDate.toString()),
+                      },
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Pick date\n'
+                              'Currently selected: '
+                              '${DateFormat('dd/MM/yyyy HH:mm').format(_selectedDate)}',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   // Submit form
                   InkWell(
