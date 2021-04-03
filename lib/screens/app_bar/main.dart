@@ -15,7 +15,7 @@ class KulutAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('Kulut'),
+      title: Text('Kulut - Split Expense Tracker'),
       backgroundColor: Theme.of(context).colorScheme.primary,
       actions: [
         IconButton(
