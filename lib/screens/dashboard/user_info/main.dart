@@ -29,8 +29,17 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                       child: Image.network(authData.pic, width: 50),
                     ),
                     title: Text(authData.name),
-                    subtitle: Text(
-                        'Total balance: ${authData.balance.toStringAsFixed(2)}€'),
+                    subtitle: Row(
+                      children: [
+                        Text('Total balance: '),
+                        Text(
+                          '${authData.balance.toStringAsFixed(2)}€',
+                          style: (authData.balance < 0)
+                              ? TextStyle(color: Theme.of(context).errorColor)
+                              : null,
+                        ),
+                      ],
+                    ),
                     trailing: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context)

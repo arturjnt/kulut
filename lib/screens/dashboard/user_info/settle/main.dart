@@ -56,7 +56,10 @@ class _SettleScreenState extends State<SettleScreen> {
                                 child: Row(
                                   children: [
                                     Image.network(_user['pic'], height: 20),
-                                    Text(_user['name']),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Text(_user['name']),
+                                    ),
                                   ],
                                 ),
                               );
