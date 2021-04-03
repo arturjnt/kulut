@@ -18,7 +18,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     return FutureBuilder(
       future: Provider.of<Auth>(context, listen: false).setUserInfo(),
       builder: (_, snap) => snap.connectionState == ConnectionState.waiting
-          ? LoadingScreen()
+          ? SizedBox(height: 112,child: LoadingScreen(),)
           : Consumer<Auth>(builder: (ctx, authData, _) {
               return Container(
                 margin: EdgeInsets.symmetric(vertical: 16),
