@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -19,26 +20,27 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       builder: (_, snap) => snap.connectionState == ConnectionState.waiting
           ? LoadingScreen()
           : Consumer<Auth>(builder: (ctx, authData, _) {
-              return Row(
-                children: [
-                  Column(
-                    children: [
-                      if (authData.name != null) Text(authData.name),
-                      if (authData.pic != null) Image.network(authData.pic),
-                    ],
+              return Card(
+                child: ListTile(
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(50.0),
+                    child: Image.network(authData.pic, width: 50),
                   ),
-                  Text(authData.balance.toStringAsFixed(2)),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(SettleScreen.routeName)
-                            .whenComplete(() {
-                          // Update Balance
-                          setState(() {});
-                        });
-                      },
-                      child: Text('Settle'))
-                ],
+                  title: Text(authData.name),
+                  subtitle: Text(
+                      'Total balance: ${authData.balance.toStringAsFixed(2)}'),
+                  trailing: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(SettleScreen.routeName)
+                          .whenComplete(() {
+                        // Update Balance
+                        setState(() {});
+                      });
+                    },
+                    child: Text('Settle'),
+                  ),
+                ),
               );
             }),
     );
