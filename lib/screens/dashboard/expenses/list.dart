@@ -78,8 +78,17 @@ class _EVListScreenState extends State<EVListScreen> {
                         ),
                       ],
                     ),
-                    title: Text(
-                        e.description + ' | settled: ' + e.settled.toString()),
+                    title: Row(
+                      children: [
+                        if (!e.settled)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Icon(Icons.cancel_outlined,
+                                size: 20, color: Theme.of(context).errorColor),
+                          ),
+                        Text(e.description),
+                      ],
+                    ),
                     subtitle: Text(_getSubtitle(e)),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
