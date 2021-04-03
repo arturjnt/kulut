@@ -30,7 +30,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     ),
                     title: Text(authData.name),
                     subtitle: Text(
-                        'Total balance: ${authData.balance.toStringAsFixed(2)}'),
+                        'Total balance: ${authData.balance.toStringAsFixed(2)}€'),
                     trailing: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context)
