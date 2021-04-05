@@ -20,7 +20,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
       aspectRatio: 16 / 10,
       child: Card(
         child: FutureBuilder(
-          future: _expenseProvider.getAllExpensesFull(),
+          future: _thisMonthExpenses(_expenseProvider.getAllExpensesFull()),
           builder: (ctx, _expensesSnap) {
             if (_expensesSnap.connectionState == ConnectionState.waiting)
               return LoadingScreen();
@@ -52,6 +52,15 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
     );
   }
 
+  Future<List<Expense>> _thisMonthExpenses(
+      Future<List<Expense>> _allExpenses) async {
+    List<Expense> _allExpensesDone = await _allExpenses;
+
+    _allExpensesDone.removeWhere((_e) => _e.when.month != DateTime.now().month);
+
+    return _allExpensesDone;
+  }
+
   List<Widget> getLegend(List<Category> _categoriesToBuildGraph) {
     double size = 12;
     return _categoriesToBuildGraph.map((c) {
@@ -71,7 +80,6 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
 
   List<PieChartSectionData> showingSections(
       List<Category> _categoriesToBuildGraph) {
-    // TODO: check if it's reactive
     // TODO: add month picker
 
     double _totalTotal = _categoriesToBuildGraph.fold(
