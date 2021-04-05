@@ -21,7 +21,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           ? SizedBox(height: 112,child: LoadingScreen(),)
           : Consumer<Auth>(builder: (ctx, authData, _) {
               return Container(
-                margin: EdgeInsets.symmetric(vertical: 16),
+                margin: const EdgeInsets.symmetric(vertical: 16),
                 child: Card(
                   child: ListTile(
                     leading: ClipRRect(
@@ -31,7 +31,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     title: Text(authData.name),
                     subtitle: Row(
                       children: [
-                        Text('Total balance: '),
+                        const Text('Total balance: '),
                         Text(
                           '${authData.balance.toStringAsFixed(2)}€',
                           style: (authData.balance < 0)
@@ -49,7 +49,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                           setState(() {});
                         });
                       },
-                      child: Text('Settle'),
+                      child: const Text('Settle'),
                     ),
                   ),
                 ),

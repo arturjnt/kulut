@@ -19,7 +19,7 @@ class _SettleScreenState extends State<SettleScreen> {
     List<Map> people;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Settle')),
+      appBar: AppBar(title: const Text('Settle')),
       body: FutureBuilder(
           future: _authProvider.getUsersToShare(),
           builder: (ctx, peopleSnap) {
@@ -33,9 +33,9 @@ class _SettleScreenState extends State<SettleScreen> {
               future: _authProvider.getMyBalance(_shareWithWhomId),
               builder: (ctx, balanceSnap) => (balanceSnap.connectionState ==
                       ConnectionState.waiting)
-                  ? SizedBox()
+                  ? const SizedBox()
                   : Container(
-                      padding: EdgeInsets.only(top: 50),
+                      padding: const EdgeInsets.only(top: 50),
                       width: double.infinity,
                       child: Column(
                         children: [
@@ -73,15 +73,15 @@ class _SettleScreenState extends State<SettleScreen> {
                                 showDialog(
                                   context: context,
                                   builder: (ctx) => AlertDialog(
-                                    title: Text("Are you sure?"),
+                                    title: const Text("Are you sure?"),
                                     actions: [
                                       TextButton(
-                                        child: Text('Cancel'),
+                                        child: const Text('Cancel'),
                                         onPressed: () =>
                                             Navigator.of(context).pop(false),
                                       ),
                                       TextButton(
-                                        child: Text('Yes'),
+                                        child: const Text('Yes'),
                                         onPressed: () async {
                                           // Call settle and go back and update
                                           await _authProvider
@@ -100,7 +100,7 @@ class _SettleScreenState extends State<SettleScreen> {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                        child: Text('Settle',
+                                        child: const Text('Settle',
                                             textAlign: TextAlign.center))
                                   ],
                                 ),
