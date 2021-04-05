@@ -5,6 +5,7 @@ class Category {
   final String name;
   final Color color;
   final IconData icon;
+  double total;
 
   Category({
     @required this.id,
@@ -55,7 +56,7 @@ class Categories {
       Category(
         id: 5,
         name: 'Gifts',
-        color: Colors.yellow,
+        color: Colors.red,
         icon: Icons.card_giftcard,
       ),
       Category(

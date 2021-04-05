@@ -181,4 +181,20 @@ class Expense with ChangeNotifier {
         .replaceFirst('OTHER', 'the person I\'m splitting with, has paid the')
         .toLowerCase();
   }
+
+  static List<Category> byCategory(List<Expense> _expenses) {
+    List<Category> _categoryList = Categories().categories.map((_c) {
+      _c.total = 0;
+      return _c;
+    }).toList();
+
+    _expenses.forEach((_e) {
+      _categoryList
+          .firstWhere((_category) => _category.id == _e.categoryId)
+          .total += _e.cost;
+    });
+
+    _categoryList.removeWhere((_cat) => _cat.total == 0.0);
+    return _categoryList;
+  }
 }

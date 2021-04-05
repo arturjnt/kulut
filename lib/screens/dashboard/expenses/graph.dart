@@ -25,6 +25,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
                   ? LoadingScreen()
                   : PieChart(
                       PieChartData(
+                        startDegreeOffset: -90,
                         centerSpaceRadius: 0,
                         sections: showingSections(_expensesSnap.data),
                       ),
@@ -35,63 +36,20 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
   }
 
   List<PieChartSectionData> showingSections(List<Expense> _expenses) {
-    print(_expenses);
-    // TODO: remove print
-    // TODO: aggregate expenses per category
-    // TODO: return category list
+    // TODO: print correct percentage
     // TODO: check if it's reactive
-    return List.generate(4, (i) {
-      // final isTouched = i == touchedIndex;
-      final double fontSize = /*isTouched ? 25 :*/ 16;
-      final double radius = /*isTouched ? 60 :*/ 100;
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: const Color(0xff0293ee),
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: const Color(0xfff8b250),
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: const Color(0xff845bef),
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: const Color(0xff13d38e),
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        default:
-          return null;
-      }
-    });
+
+    return Expense.byCategory(_expenses)
+        .map((_cat) => PieChartSectionData(
+              color: _cat.color,
+              value: _cat.total,
+              title: '40%',
+              radius: 100,
+              titleStyle: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ))
+        .toList();
   }
 }
