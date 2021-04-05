@@ -63,7 +63,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
             decoration: BoxDecoration(shape: BoxShape.circle, color: c.color),
           ),
           SizedBox(width: 5),
-          Text(c.name, style: TextStyle(fontSize: 16)),
+          Text('${c.name}: ${c.total}€', style: TextStyle(fontSize: 14)),
         ],
       );
     }).toList();
@@ -83,9 +83,10 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
               value: _cat.total,
               title:
                   '${((_cat.total / _totalTotal) * 100).toStringAsFixed(2)}%',
-              radius: 100,
+              radius: 70,
+              titlePositionPercentageOffset: 1.3,
               titleStyle: TextStyle(
-                  fontSize: 16,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ))

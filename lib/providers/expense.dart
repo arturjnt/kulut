@@ -194,6 +194,7 @@ class Expense with ChangeNotifier {
           .total += _e.cost;
     });
 
+    _categoryList.sort((a, b) => b.total.compareTo(a.total));
     _categoryList.removeWhere((_cat) => _cat.total == 0.0);
     return _categoryList;
   }
