@@ -36,19 +36,24 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
   }
 
   List<PieChartSectionData> showingSections(List<Expense> _expenses) {
-    // TODO: print correct percentage
+    // TODO: create legend
     // TODO: check if it's reactive
 
-    return Expense.byCategory(_expenses)
+    List _categoriesToBuildGraph = Expense.byCategory(_expenses);
+    double _totalTotal = _categoriesToBuildGraph.fold(
+        0, (accumulator, currentValue) => accumulator += currentValue.total);
+
+    return _categoriesToBuildGraph
         .map((_cat) => PieChartSectionData(
               color: _cat.color,
               value: _cat.total,
-              title: '40%',
+              title:
+                  '${((_cat.total / _totalTotal) * 100).toStringAsFixed(2)}%',
               radius: 100,
               titleStyle: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black),
+                  color: Colors.white),
             ))
         .toList();
   }
