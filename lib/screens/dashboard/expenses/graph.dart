@@ -12,6 +12,8 @@ class EVGraphScreen extends StatefulWidget {
   _EVGraphScreenState createState() => _EVGraphScreenState();
 }
 
+enum MOVE_MONTH { PREVIOUS, NEXT }
+
 class _EVGraphScreenState extends State<EVGraphScreen> {
   DateTime _currentDate = DateTime.now();
 
@@ -36,27 +38,9 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
               children: [
                 Row(
                   children: [
-                    Expanded(
-                        child: IconButton(
-                            icon: Icon(Icons.chevron_left),
-                            onPressed: () async {
-                              setState(() {
-                                DateTime previousDate = _currentDate;
-                                _currentDate = DateTime(previousDate.year,
-                                    previousDate.month - 1, 1);
-                              });
-                            })),
+                    Expanded(child: prevNextMonth(MOVE_MONTH.PREVIOUS)),
                     Text(DateFormat('MMMM yyyy').format(_currentDate)),
-                    Expanded(
-                        child: IconButton(
-                            icon: Icon(Icons.chevron_right),
-                            onPressed: () async {
-                              setState(() {
-                                DateTime previousDate = _currentDate;
-                                _currentDate = DateTime(previousDate.year,
-                                    previousDate.month + 1, 1);
-                              });
-                            }))
+                    Expanded(child: prevNextMonth(MOVE_MONTH.NEXT))
                   ],
                 ),
                 (_expensesToBuildGraph.isEmpty)
@@ -74,11 +58,13 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
                                 ),
                               ),
                             ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: getLegend(_categoriesToBuildGraph),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: getLegend(_categoriesToBuildGraph),
+                              ),
                             )
                           ],
                         ),
@@ -89,6 +75,24 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
         ),
       ),
     );
+  }
+
+  IconButton prevNextMonth(MOVE_MONTH mm) {
+    return IconButton(
+        icon: Icon((mm == MOVE_MONTH.PREVIOUS)
+            ? Icons.chevron_left
+            : Icons.chevron_right),
+        onPressed: () async {
+          setState(() {
+            DateTime previousDate = _currentDate;
+            _currentDate = DateTime(
+                previousDate.year,
+                (mm == MOVE_MONTH.PREVIOUS)
+                    ? previousDate.month - 1
+                    : previousDate.month + 1,
+                1);
+          });
+        });
   }
 
   Future<List<Expense>> _monthlyExpenses(
