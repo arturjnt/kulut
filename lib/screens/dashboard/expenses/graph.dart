@@ -120,8 +120,6 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
 
   List<PieChartSectionData> showingSections(
       List<Category> _categoriesToBuildGraph) {
-    // TODO: add month picker
-
     double _totalTotal = _categoriesToBuildGraph.fold(
         0, (accumulator, currentValue) => accumulator += currentValue.total);
 
