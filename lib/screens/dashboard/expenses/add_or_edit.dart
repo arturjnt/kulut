@@ -148,7 +148,10 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                         value: _cat.id,
                         child: Row(
                           children: [
-                            Icon(_cat.icon, color: _cat.color),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Icon(_cat.icon, color: _cat.color),
+                            ),
                             Text(_cat.name),
                           ],
                         ),

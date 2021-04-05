@@ -56,7 +56,7 @@ class Categories {
       Category(
         id: 5,
         name: 'Gifts',
-        color: Colors.red,
+        color: Colors.yellow,
         icon: Icons.card_giftcard,
       ),
       Category(
@@ -80,7 +80,7 @@ class Categories {
       Category(
         id: 9,
         name: 'Others',
-        color: Colors.black26,
+        color: Colors.teal,
         icon: Icons.featured_play_list_outlined,
       ),
     ];
