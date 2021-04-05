@@ -38,6 +38,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
   List<PieChartSectionData> showingSections(List<Expense> _expenses) {
     // TODO: create legend
     // TODO: check if it's reactive
+    // TODO: add month picker
 
     List _categoriesToBuildGraph = Expense.byCategory(_expenses);
     double _totalTotal = _categoriesToBuildGraph.fold(
