@@ -31,7 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: () {
           Navigator.of(context)
@@ -61,8 +61,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           height: 50,
           child: Row(
             children: [
-              Expanded(child: Text('Check the list')),
-              Icon(Icons.list),
+              const Expanded(child: const Text('Check the list')),
+              const Icon(Icons.list),
             ],
           ),
         ),
