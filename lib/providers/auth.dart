@@ -139,6 +139,11 @@ class Auth with ChangeNotifier {
               _balanceToSet -= e.cost;
               break;
             }
+          case SPLIT.OTHER_EQUALLY:
+            {
+              _balanceToSet -= e.cost / 2;
+              break;
+            }
         }
       } else if (e.splitWithPersonId == _idToSet) {
         switch (e.split) {
@@ -155,6 +160,11 @@ class Auth with ChangeNotifier {
           case SPLIT.OTHER_TOTAL:
             {
               _balanceToSet += e.cost;
+              break;
+            }
+          case SPLIT.OTHER_EQUALLY:
+            {
+              _balanceToSet += e.cost / 2;
               break;
             }
         }

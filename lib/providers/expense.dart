@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'auth.dart';
 import 'categories.dart';
 
-enum SPLIT { EQUALLY, ME_TOTAL, OTHER_TOTAL }
+enum SPLIT { EQUALLY, ME_TOTAL, OTHER_TOTAL, OTHER_EQUALLY }
 
 class Expense with ChangeNotifier {
   String id;
@@ -167,6 +167,12 @@ class Expense with ChangeNotifier {
           _sentence = '$_paidBy owes $_splitWith: ${e.cost.toString()}€';
           break;
         }
+      case SPLIT.OTHER_EQUALLY:
+        {
+          _sentence =
+              '$_splitWith paid half of ${e.cost.toString()}€ with $_paidBy';
+          break;
+        }
     }
     return _sentence;
   }
@@ -176,9 +182,10 @@ class Expense with ChangeNotifier {
         .toString()
         .substring(6)
         .replaceFirst('_', ' ')
-        .replaceFirst('EQ', 'We\'ll split it eq')
-        .replaceFirst('ME', 'i have paid the')
-        .replaceFirst('OTHER', 'the person I\'m splitting with, has paid the')
+        .replaceFirst('EQ', 'We split it eq')
+        .replaceFirst('ME', 'i paid the')
+        .replaceFirst('OTHER T', 'the person I\'m splitting with, paid the t')
+        .replaceFirst('OTHER', 'the person I\'m splitting with paid, and')
         .toLowerCase();
   }
 
