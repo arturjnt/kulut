@@ -17,7 +17,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
     Expense _expenseProvider = Provider.of<Expense>(context);
 
     return AspectRatio(
-      aspectRatio: 16 / 10,
+      aspectRatio: 4/3,
       child: Card(
         child: FutureBuilder(
           future: _thisMonthExpenses(_expenseProvider.getAllExpensesFull()),
@@ -27,23 +27,36 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
             List _categoriesToBuildGraph =
                 Expense.byCategory(_expensesSnap.data);
 
-            return Row(
+            return Column(
               children: [
+                Row(
+                  children: [
+                    Expanded(child: IconButton(icon: Icon(Icons.chevron_left), onPressed: () {})),
+                    Text('What month???'),
+                    Expanded(child: IconButton(icon: Icon(Icons.chevron_right), onPressed: () {}))
+                  ],
+                ),
                 Expanded(
-                  child: PieChart(
-                    PieChartData(
-                      startDegreeOffset: -90,
-                      centerSpaceRadius: 0,
-                      sections: showingSections(_categoriesToBuildGraph),
-                    ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: PieChart(
+                          PieChartData(
+                            startDegreeOffset: -90,
+                            centerSpaceRadius: 0,
+                            sections: showingSections(_categoriesToBuildGraph),
+                          ),
+                        ),
+                      ),
+                      Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: getLegend(_categoriesToBuildGraph),
+                      )
+                    ],
                   ),
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: getLegend(_categoriesToBuildGraph),
-                )
               ],
             );
           },

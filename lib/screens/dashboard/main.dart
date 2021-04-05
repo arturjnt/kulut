@@ -46,22 +46,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget listButton(context) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.of(context)
-            .pushNamed(EVListScreen.routeName)
-            .whenComplete(() {
-          // Update Balance
-          setState(() {});
-        });
-      },
-      child: Container(
-        height: 50,
-        child: Row(
-          children: [
-            Expanded(child: Text('Check the list')),
-            Icon(Icons.list),
-          ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16, left: 4, right: 4),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.of(context)
+              .pushNamed(EVListScreen.routeName)
+              .whenComplete(() {
+            // Update Balance
+            setState(() {});
+          });
+        },
+        child: Container(
+          height: 50,
+          child: Row(
+            children: [
+              Expanded(child: Text('Check the list')),
+              Icon(Icons.list),
+            ],
+          ),
         ),
       ),
     );
