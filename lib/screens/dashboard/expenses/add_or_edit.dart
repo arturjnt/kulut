@@ -89,9 +89,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
       appBar: AppBar(
         title: Text('${_modeToPrint.capitalize()} Expense'),
       ),
-      body:
-          // People picker
-          FutureBuilder(
+      body: FutureBuilder(
         future: (people == null) ? _authProvider.getUsersToShare() : null,
         builder: (ctx, authSnap) {
           if (authSnap.connectionState == ConnectionState.waiting) {
@@ -111,6 +109,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
+                  // People picker
                   DropdownButton<String>(
                     isExpanded: true,
                     value: _shareWithWhomId,
@@ -158,7 +157,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                   ),
                   // Description
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Description'),
+                    decoration: const InputDecoration(labelText: 'Description'),
                     controller: _descriptionController,
                     validator: (value) {
                       return (value.isEmpty) ? 'Please enter some text' : null;
@@ -166,8 +165,8 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                   ),
                   //Cost
                   TextFormField(
-                    decoration: InputDecoration(
-                        labelText: 'Cost', suffixIcon: Icon(Icons.euro)),
+                    decoration: const InputDecoration(
+                        labelText: 'Cost', suffixIcon: const Icon(Icons.euro)),
                     controller: _costController,
                     keyboardType: TextInputType.number,
                     validator: (value) {

@@ -46,7 +46,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
                   if (_expensesToBuildGraph.isEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 90),
-                      child: Text('No expenses recorded!'),
+                      child: const Text('No expenses recorded!'),
                     ),
                   if (_expensesToBuildGraph.isNotEmpty)
                     Expanded(
