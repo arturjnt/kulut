@@ -81,10 +81,19 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
         .map((_cat) => PieChartSectionData(
               color: _cat.color,
               value: _cat.total,
-              title:
-                  '${((_cat.total / _totalTotal) * 100).toStringAsFixed(2)}%',
+              badgeWidget: Text(
+                '${((_cat.total / _totalTotal) * 100).toStringAsFixed(2)}%',
+                style: TextStyle(shadows: [
+                  Shadow(
+                    offset: Offset(1.0, 1.0),
+                    blurRadius: 4.0,
+                    color: Colors.black,
+                  )
+                ]),
+              ),
+              showTitle: false,
               radius: 70,
-              titlePositionPercentageOffset: 1.3,
+              badgePositionPercentageOffset: 1.3,
               titleStyle: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
