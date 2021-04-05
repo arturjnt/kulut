@@ -25,54 +25,57 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
       aspectRatio: 4 / 3,
       child: Card(
         child: FutureBuilder(
-          future: _monthlyExpenses(_expenseProvider.getAllExpensesFull(),
-              _currentDate.month, _currentDate.year),
-          builder: (ctx, _expensesSnap) {
-            if (_expensesSnap.connectionState == ConnectionState.waiting)
-              return LoadingScreen();
-            List<Expense> _expensesToBuildGraph = _expensesSnap.data;
-            List<Category> _categoriesToBuildGraph =
-                Expense.byCategory(_expensesToBuildGraph);
+            future: _monthlyExpenses(_expenseProvider.getAllExpensesFull(),
+                _currentDate.month, _currentDate.year),
+            builder: (ctx, _expensesSnap) {
+              if (_expensesSnap.connectionState == ConnectionState.waiting)
+                return LoadingScreen();
+              List<Expense> _expensesToBuildGraph = _expensesSnap.data;
+              List<Category> _categoriesToBuildGraph =
+                  Expense.byCategory(_expensesToBuildGraph);
 
-            return Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(child: prevNextMonth(MOVE_MONTH.PREVIOUS)),
-                    Text(DateFormat('MMMM yyyy').format(_currentDate)),
-                    Expanded(child: prevNextMonth(MOVE_MONTH.NEXT))
-                  ],
-                ),
-                (_expensesToBuildGraph.isEmpty)
-                    ? Text('No expenses recorded!')
-                    : Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: PieChart(
-                                PieChartData(
-                                  startDegreeOffset: -90,
-                                  centerSpaceRadius: 0,
-                                  sections:
-                                      showingSections(_categoriesToBuildGraph),
-                                ),
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: prevNextMonth(MOVE_MONTH.PREVIOUS)),
+                      Text(DateFormat('MMMM yyyy').format(_currentDate)),
+                      Expanded(child: prevNextMonth(MOVE_MONTH.NEXT))
+                    ],
+                  ),
+                  if (_expensesToBuildGraph.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 90),
+                      child: Text('No expenses recorded!'),
+                    ),
+                  if (_expensesToBuildGraph.isNotEmpty)
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: PieChart(
+                              PieChartData(
+                                startDegreeOffset: -90,
+                                centerSpaceRadius: 0,
+                                sections:
+                                    showingSections(_categoriesToBuildGraph),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: getLegend(_categoriesToBuildGraph),
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: getLegend(_categoriesToBuildGraph),
+                            ),
+                          ),
+                        ],
                       ),
-              ],
-            );
-          },
-        ),
+                    ),
+                ],
+              );
+            }),
       ),
     );
   }
