@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:kulut/providers/categories.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
+import '../../../providers/categories.dart';
 import '../../../providers/expense.dart';
 import '../../loading/main.dart';
 
@@ -12,51 +13,76 @@ class EVGraphScreen extends StatefulWidget {
 }
 
 class _EVGraphScreenState extends State<EVGraphScreen> {
+  DateTime _currentDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     Expense _expenseProvider = Provider.of<Expense>(context);
 
     return AspectRatio(
-      aspectRatio: 4/3,
+      aspectRatio: 4 / 3,
       child: Card(
         child: FutureBuilder(
-          future: _thisMonthExpenses(_expenseProvider.getAllExpensesFull()),
+          future: _monthlyExpenses(_expenseProvider.getAllExpensesFull(),
+              _currentDate.month, _currentDate.year),
           builder: (ctx, _expensesSnap) {
             if (_expensesSnap.connectionState == ConnectionState.waiting)
               return LoadingScreen();
-            List _categoriesToBuildGraph =
-                Expense.byCategory(_expensesSnap.data);
+            List<Expense> _expensesToBuildGraph = _expensesSnap.data;
+            List<Category> _categoriesToBuildGraph =
+                Expense.byCategory(_expensesToBuildGraph);
 
             return Column(
               children: [
                 Row(
                   children: [
-                    Expanded(child: IconButton(icon: Icon(Icons.chevron_left), onPressed: () {})),
-                    Text('What month???'),
-                    Expanded(child: IconButton(icon: Icon(Icons.chevron_right), onPressed: () {}))
+                    Expanded(
+                        child: IconButton(
+                            icon: Icon(Icons.chevron_left),
+                            onPressed: () async {
+                              setState(() {
+                                DateTime previousDate = _currentDate;
+                                _currentDate = DateTime(previousDate.year,
+                                    previousDate.month - 1, 1);
+                              });
+                            })),
+                    Text(DateFormat('MMMM yyyy').format(_currentDate)),
+                    Expanded(
+                        child: IconButton(
+                            icon: Icon(Icons.chevron_right),
+                            onPressed: () async {
+                              setState(() {
+                                DateTime previousDate = _currentDate;
+                                _currentDate = DateTime(previousDate.year,
+                                    previousDate.month + 1, 1);
+                              });
+                            }))
                   ],
                 ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: PieChart(
-                          PieChartData(
-                            startDegreeOffset: -90,
-                            centerSpaceRadius: 0,
-                            sections: showingSections(_categoriesToBuildGraph),
-                          ),
+                (_expensesToBuildGraph.isEmpty)
+                    ? Text('No expenses recorded!')
+                    : Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: PieChart(
+                                PieChartData(
+                                  startDegreeOffset: -90,
+                                  centerSpaceRadius: 0,
+                                  sections:
+                                      showingSections(_categoriesToBuildGraph),
+                                ),
+                              ),
+                            ),
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: getLegend(_categoriesToBuildGraph),
+                            )
+                          ],
                         ),
                       ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: getLegend(_categoriesToBuildGraph),
-                      )
-                    ],
-                  ),
-                ),
               ],
             );
           },
@@ -65,11 +91,12 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
     );
   }
 
-  Future<List<Expense>> _thisMonthExpenses(
-      Future<List<Expense>> _allExpenses) async {
+  Future<List<Expense>> _monthlyExpenses(
+      Future<List<Expense>> _allExpenses, int month, int year) async {
     List<Expense> _allExpensesDone = await _allExpenses;
 
-    _allExpensesDone.removeWhere((_e) => _e.when.month != DateTime.now().month);
+    _allExpensesDone
+        .removeWhere((_e) => _e.when.month != month || _e.when.year != year);
 
     return _allExpensesDone;
   }
