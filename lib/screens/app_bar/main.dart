@@ -19,7 +19,7 @@ class KulutAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Theme.of(context).colorScheme.primary,
       actions: [
         IconButton(
-          icon: Icon(Icons.exit_to_app),
+          icon: const Icon(Icons.exit_to_app),
           tooltip: 'Logout',
           onPressed: () {
             Provider.of<Auth>(context, listen: false).signOut();

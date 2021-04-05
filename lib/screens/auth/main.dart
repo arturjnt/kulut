@@ -15,12 +15,12 @@ class AuthScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.monetization_on,
                 size: 150,
                 color: Colors.lightGreen,
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               OutlinedButton(
                 onPressed: () async {
                   await Provider.of<Auth>(context, listen: false).signIn();
@@ -32,12 +32,13 @@ class AuthScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image(
-                        image: AssetImage("assets/images/google_logo.png"),
+                        image:
+                            const AssetImage("assets/images/google_logo.png"),
                         height: 35.0,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text('Sign in with Google'),
+                        child: const Text('Sign in with Google'),
                       )
                     ],
                   ),
