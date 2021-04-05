@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:kulut/providers/categories.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/expense.dart';
@@ -20,27 +21,59 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
       child: Card(
         child: FutureBuilder(
           future: _expenseProvider.getAllExpensesFull(),
-          builder: (ctx, _expensesSnap) =>
-              _expensesSnap.connectionState == ConnectionState.waiting
-                  ? LoadingScreen()
-                  : PieChart(
-                      PieChartData(
-                        startDegreeOffset: -90,
-                        centerSpaceRadius: 0,
-                        sections: showingSections(_expensesSnap.data),
-                      ),
+          builder: (ctx, _expensesSnap) {
+            if (_expensesSnap.connectionState == ConnectionState.waiting)
+              return LoadingScreen();
+            List _categoriesToBuildGraph =
+                Expense.byCategory(_expensesSnap.data);
+
+            return Row(
+              children: [
+                Expanded(
+                  child: PieChart(
+                    PieChartData(
+                      startDegreeOffset: -90,
+                      centerSpaceRadius: 0,
+                      sections: showingSections(_categoriesToBuildGraph),
                     ),
+                  ),
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: getLegend(_categoriesToBuildGraph),
+                )
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  List<PieChartSectionData> showingSections(List<Expense> _expenses) {
-    // TODO: create legend
+  List<Widget> getLegend(List<Category> _categoriesToBuildGraph) {
+    double size = 12;
+    return _categoriesToBuildGraph.map((c) {
+      return Row(
+        children: [
+          Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c.color),
+          ),
+          SizedBox(width: 5),
+          Text(c.name, style: TextStyle(fontSize: 16)),
+        ],
+      );
+    }).toList();
+  }
+
+  List<PieChartSectionData> showingSections(
+      List<Category> _categoriesToBuildGraph) {
     // TODO: check if it's reactive
     // TODO: add month picker
 
-    List _categoriesToBuildGraph = Expense.byCategory(_expenses);
     double _totalTotal = _categoriesToBuildGraph.fold(
         0, (accumulator, currentValue) => accumulator += currentValue.total);
 
