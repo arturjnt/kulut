@@ -75,24 +75,23 @@ class Expense with ChangeNotifier {
         .where('splitWithPersonId', isEqualTo: prefs.get('_id'))
         .get();
 
-    QuerySnapshot qSnap;
+    List<QueryDocumentSnapshot> _docs;
 
     // Check if he's already registered, if not, do it
     if (qSnapPaid.docs.toString() == '[]') {
       if (qSnapSplit.docs.toString() == '[]') {
         return [];
       }
-      qSnap = qSnapSplit;
+      _docs = qSnapSplit.docs;
     } else {
       if (qSnapSplit.docs.toString() == '[]') {
-        qSnap = qSnapPaid;
+        _docs = qSnapPaid.docs;
       }
-      qSnapPaid.docs.addAll(qSnapSplit.docs);
-      qSnap = qSnapPaid;
+      _docs = [...qSnapPaid.docs, ...qSnapSplit.docs];
     }
 
     // create expenses and return
-    List<Expense> _allExpenses = qSnap.docs.map((doc) {
+    List<Expense> _allExpenses = _docs.map((doc) {
       return Expense(
           id: doc.id,
           description: doc['description'],
