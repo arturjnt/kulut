@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'auth.dart';
 import 'categories.dart';
 
-enum SPLIT { EQUALLY, ME_TOTAL, OTHER_TOTAL, OTHER_EQUALLY }
+enum SPLIT { EQUALLY, ME_TOTAL, OTHER_TOTAL, OTHER_EQUALLY, NO_SPLIT }
 
 class Expense with ChangeNotifier {
   String id;
@@ -51,6 +51,10 @@ class Expense with ChangeNotifier {
   }
 
   Future<void> saveExpense(Expense e) async {
+    if (e.split == SPLIT.NO_SPLIT) {
+      e.settled = true;
+      e.splitWithPersonId = null;
+    }
     DocumentReference _newExpenseRef =
         await FirebaseFirestore.instance.collection('expenses').add(toMap(e));
     DocumentSnapshot _newExpense = await _newExpenseRef.get();
@@ -149,6 +153,7 @@ class Expense with ChangeNotifier {
     String _paidBy = e.paidByPerson[e.paidByPersonId];
     String _splitWith = e.splitWithPerson[e.splitWithPersonId];
 
+    // TODO: here
     switch (e.split) {
       case SPLIT.EQUALLY:
         {
@@ -172,6 +177,11 @@ class Expense with ChangeNotifier {
               '$_splitWith paid half of ${e.cost.toString()}€ with $_paidBy';
           break;
         }
+      case SPLIT.NO_SPLIT:
+        {
+          _sentence = 'This is your expense alone! ($_paidBy)';
+          break;
+        }
     }
     return _sentence;
   }
@@ -185,6 +195,7 @@ class Expense with ChangeNotifier {
         .replaceFirst('ME', 'i paid the')
         .replaceFirst('OTHER T', 'the person I\'m splitting with, paid the t')
         .replaceFirst('OTHER', 'the person I\'m splitting with paid, and')
+        .replaceFirst('NO', 'Don\'t')
         .toLowerCase();
   }
 

@@ -125,6 +125,8 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
       _allExpensesDone.forEach((_g) {
         _g.cost /= 2;
       });
+    } else {
+      _allExpensesDone.removeWhere((_h) => _h.split == SPLIT.NO_SPLIT);
     }
 
     return _allExpensesDone;

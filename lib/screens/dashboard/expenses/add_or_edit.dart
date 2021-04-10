@@ -110,29 +110,30 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
               child: Column(
                 children: [
                   // People picker
-                  DropdownButton<String>(
-                    isExpanded: true,
-                    value: _shareWithWhomId,
-                    onChanged: (String newValue) {
-                      setState(() {
-                        _shareWithWhomId = newValue;
-                      });
-                    },
-                    items: people.map<DropdownMenuItem<String>>((Map _user) {
-                      return DropdownMenuItem<String>(
-                        value: _user['id'],
-                        child: Row(
-                          children: [
-                            Image.network(_user['pic'], height: 20),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(_user['name']),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                  if (_pickedSPLIT != SPLIT.NO_SPLIT)
+                    DropdownButton<String>(
+                      isExpanded: true,
+                      value: _shareWithWhomId,
+                      onChanged: (String newValue) {
+                        setState(() {
+                          _shareWithWhomId = newValue;
+                        });
+                      },
+                      items: people.map<DropdownMenuItem<String>>((Map _user) {
+                        return DropdownMenuItem<String>(
+                          value: _user['id'],
+                          child: Row(
+                            children: [
+                              Image.network(_user['pic'], height: 20),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(_user['name']),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
                   //Category picker
                   DropdownButton<int>(
                     isExpanded: true,
