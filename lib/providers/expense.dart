@@ -129,7 +129,7 @@ class Expense with ChangeNotifier {
   }
 
   /// Returns all expenses, plus data on people and categories
-  Future<List<Expense>> getAllExpensesFull() async {
+  Future<List<Expense>> getAllExpensesFull(bool _isCombined) async {
     List<Expense> _allExpenses = await getAllExpenses();
     List<Map<String, String>> _allPeople = await _people(_allExpenses);
 
@@ -140,6 +140,18 @@ class Expense with ChangeNotifier {
       e.splitWithPerson =
           _allPeople.firstWhere((p) => p[e.splitWithPersonId] != null);
     });
+
+    if (!_isCombined) {
+      _allExpenses.removeWhere(
+              (_f) => _f.split == SPLIT.ME_TOTAL || _f.split == SPLIT.OTHER_TOTAL);
+      _allExpenses.forEach((_g) {
+        if (_g.split != SPLIT.NO_SPLIT) {
+          _g.cost /= 2;
+        }
+      });
+    } else {
+      _allExpenses.removeWhere((_h) => _h.split == SPLIT.NO_SPLIT);
+    }
 
     return _allExpenses;
   }

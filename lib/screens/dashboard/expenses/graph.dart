@@ -23,15 +23,13 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
     Expense _expenseProvider = Provider.of<Expense>(context);
 
     return AspectRatio(
-      aspectRatio: 4 / 3,
+      aspectRatio: 1,
       child: Card(
         child: FutureBuilder(
             future: _monthlyExpenses(
-              _expenseProvider.getAllExpensesFull(),
-              _currentDate.month,
-              _currentDate.year,
-              _controlCombined,
-            ),
+                _expenseProvider.getAllExpensesFull(_controlCombined),
+                _currentDate.month,
+                _currentDate.year),
             builder: (ctx, _expensesSnap) {
               if (_expensesSnap.connectionState == ConnectionState.waiting)
                 return LoadingScreen();
@@ -49,7 +47,8 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
                     ],
                   ),
                   CheckboxListTile(
-                    title: Text('Combined?', textAlign: TextAlign.right),
+                    title: Text('Show Combined Expenses',
+                        textAlign: TextAlign.right),
                     value: _controlCombined,
                     onChanged: (_newState) {
                       setState(() {
@@ -112,22 +111,12 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
         });
   }
 
-  Future<List<Expense>> _monthlyExpenses(Future<List<Expense>> _allExpenses,
-      int month, int year, bool combined) async {
+  Future<List<Expense>> _monthlyExpenses(
+      Future<List<Expense>> _allExpenses, int month, int year) async {
     List<Expense> _allExpensesDone = await _allExpenses;
 
     _allExpensesDone
         .removeWhere((_e) => _e.when.month != month || _e.when.year != year);
-
-    if (!combined) {
-      _allExpensesDone.removeWhere(
-          (_f) => _f.split == SPLIT.ME_TOTAL || _f.split == SPLIT.OTHER_TOTAL);
-      _allExpensesDone.forEach((_g) {
-        _g.cost /= 2;
-      });
-    } else {
-      _allExpensesDone.removeWhere((_h) => _h.split == SPLIT.NO_SPLIT);
-    }
 
     return _allExpensesDone;
   }
@@ -143,7 +132,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
             decoration: BoxDecoration(shape: BoxShape.circle, color: c.color),
           ),
           SizedBox(width: 5),
-          Text('${c.name}: ${c.total.toStringAsFixed(2)}€',
+          Text('${c.total.toStringAsFixed(2)}€',
               style: TextStyle(fontSize: 14)),
         ],
       );
@@ -159,10 +148,10 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
         .map((_cat) => PieChartSectionData(
               color: _cat.color,
               value: _cat.total,
-              badgeWidget: (_cat.total / _totalTotal < 0.05)
+              badgeWidget: (_cat.total / _totalTotal < 0.06)
                   ? null
                   : Text(
-                      '${((_cat.total / _totalTotal) * 100).toStringAsFixed(2)}%',
+                      '${_cat.name}\n${((_cat.total / _totalTotal) * 100).toStringAsFixed(2)}%',
                       style: TextStyle(shadows: [
                         Shadow(
                           offset: Offset(1.0, 1.0),
@@ -173,7 +162,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
                     ),
               showTitle: false,
               radius: 70,
-              badgePositionPercentageOffset: 1.37,
+              badgePositionPercentageOffset: 1.5,
               titleStyle: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
