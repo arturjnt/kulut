@@ -26,8 +26,12 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
       aspectRatio: 4 / 3,
       child: Card(
         child: FutureBuilder(
-            future: _monthlyExpenses(_expenseProvider.getAllExpensesFull(),
-                _currentDate.month, _currentDate.year),
+            future: _monthlyExpenses(
+              _expenseProvider.getAllExpensesFull(),
+              _currentDate.month,
+              _currentDate.year,
+              personal: _controlPersonal,
+            ),
             builder: (ctx, _expensesSnap) {
               if (_expensesSnap.connectionState == ConnectionState.waiting)
                 return LoadingScreen();
@@ -109,11 +113,20 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
   }
 
   Future<List<Expense>> _monthlyExpenses(
-      Future<List<Expense>> _allExpenses, int month, int year) async {
+      Future<List<Expense>> _allExpenses, int month, int year,
+      {personal = false}) async {
     List<Expense> _allExpensesDone = await _allExpenses;
 
     _allExpensesDone
         .removeWhere((_e) => _e.when.month != month || _e.when.year != year);
+
+    if (personal) {
+      _allExpensesDone.removeWhere(
+          (_f) => _f.split == SPLIT.ME_TOTAL || _f.split == SPLIT.OTHER_TOTAL);
+      _allExpensesDone.forEach((_g) {
+        _g.cost /= 2;
+      });
+    }
 
     return _allExpensesDone;
   }
