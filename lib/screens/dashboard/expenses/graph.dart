@@ -16,7 +16,7 @@ enum MOVE_MONTH { PREVIOUS, NEXT }
 
 class _EVGraphScreenState extends State<EVGraphScreen> {
   DateTime _currentDate = DateTime.now();
-  bool _controlPersonal = false;
+  bool _controlCombined = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
               _expenseProvider.getAllExpensesFull(),
               _currentDate.month,
               _currentDate.year,
-              personal: _controlPersonal,
+              _controlCombined,
             ),
             builder: (ctx, _expensesSnap) {
               if (_expensesSnap.connectionState == ConnectionState.waiting)
@@ -49,11 +49,11 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
                     ],
                   ),
                   CheckboxListTile(
-                    title: Text('Personal only?', textAlign: TextAlign.right),
-                    value: _controlPersonal,
+                    title: Text('Combined?', textAlign: TextAlign.right),
+                    value: _controlCombined,
                     onChanged: (_newState) {
                       setState(() {
-                        _controlPersonal = _newState;
+                        _controlCombined = _newState;
                       });
                     },
                   ),
@@ -113,14 +113,13 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
   }
 
   Future<List<Expense>> _monthlyExpenses(
-      Future<List<Expense>> _allExpenses, int month, int year,
-      {personal = false}) async {
+      Future<List<Expense>> _allExpenses, int month, int year, bool combined) async {
     List<Expense> _allExpensesDone = await _allExpenses;
 
     _allExpensesDone
         .removeWhere((_e) => _e.when.month != month || _e.when.year != year);
 
-    if (personal) {
+    if (!combined) {
       _allExpensesDone.removeWhere(
           (_f) => _f.split == SPLIT.ME_TOTAL || _f.split == SPLIT.OTHER_TOTAL);
       _allExpensesDone.forEach((_g) {
@@ -142,7 +141,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
             decoration: BoxDecoration(shape: BoxShape.circle, color: c.color),
           ),
           SizedBox(width: 5),
-          Text('${c.name}: ${c.total}€', style: TextStyle(fontSize: 14)),
+          Text('${c.name}: ${c.total.toStringAsFixed(2)}€', style: TextStyle(fontSize: 14)),
         ],
       );
     }).toList();
