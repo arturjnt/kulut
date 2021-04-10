@@ -34,7 +34,8 @@ class MyApp extends StatelessWidget {
         title: 'Kulut - Split Expense Tracker',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.green,
+          primarySwatch: Colors.blue,
+          accentColor: Colors.blueAccent,
           brightness: Brightness.dark,
         ),
         home: FutureBuilder(

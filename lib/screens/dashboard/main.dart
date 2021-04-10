@@ -32,7 +32,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: () {
           Navigator.of(context)
               .pushNamed(AddOrEditScreen.routeName)

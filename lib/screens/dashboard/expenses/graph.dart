@@ -112,8 +112,8 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
         });
   }
 
-  Future<List<Expense>> _monthlyExpenses(
-      Future<List<Expense>> _allExpenses, int month, int year, bool combined) async {
+  Future<List<Expense>> _monthlyExpenses(Future<List<Expense>> _allExpenses,
+      int month, int year, bool combined) async {
     List<Expense> _allExpensesDone = await _allExpenses;
 
     _allExpensesDone
@@ -141,7 +141,8 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
             decoration: BoxDecoration(shape: BoxShape.circle, color: c.color),
           ),
           SizedBox(width: 5),
-          Text('${c.name}: ${c.total.toStringAsFixed(2)}€', style: TextStyle(fontSize: 14)),
+          Text('${c.name}: ${c.total.toStringAsFixed(2)}€',
+              style: TextStyle(fontSize: 14)),
         ],
       );
     }).toList();
@@ -170,7 +171,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
                     ),
               showTitle: false,
               radius: 70,
-              badgePositionPercentageOffset: 1.3,
+              badgePositionPercentageOffset: 1.37,
               titleStyle: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
