@@ -113,7 +113,8 @@ class _EVListScreenState extends State<EVListScreen> {
                                     Text(e.description),
                                   ],
                                 ),
-                                subtitle: Text(Expense.getSplitType(e)),
+                                subtitle:
+                                    Text(Expense.getSplitType(e, _isCombined)),
                                 trailing: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

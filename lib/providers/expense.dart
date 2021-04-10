@@ -65,7 +65,7 @@ class Expense with ChangeNotifier {
     await FirebaseFirestore.instance.doc('expenses/${e.id}').update(toMap(e));
   }
 
-  Future<List<Expense>> getAllExpenses() async {
+  Future<List<Expense>> getAllExpenses({isCombined = false}) async {
     // get all expenses i paid or splitwithme
     final prefs = await SharedPreferences.getInstance();
 
@@ -110,7 +110,27 @@ class Expense with ChangeNotifier {
           ));
     }).toList();
 
+    if (!isCombined) {
+      // If i'm myself and i paid the total for someone else, pls remove
+      // OR
+      // If i'm the split-edWithPerson and i paid the total for someone else
+      _allExpenses.removeWhere((_f) =>
+          (_f.paidByPersonId == prefs.get('_id') &&
+              _f.split == SPLIT.ME_TOTAL) ||
+          _f.splitWithPersonId == prefs.get('_id') &&
+              _f.split == SPLIT.OTHER_TOTAL);
+      _allExpenses.forEach((_g) {
+        // If someone else paid me something (other_total) i want to see it in my expenses in total
+        if (_g.split == SPLIT.EQUALLY || _g.split == SPLIT.OTHER_EQUALLY) {
+          _g.cost /= 2;
+        }
+      });
+    } else {
+      _allExpenses.removeWhere((_h) => _h.split == SPLIT.NO_SPLIT);
+    }
+
     _allExpenses.sort((a, b) => b.when.compareTo(a.when));
+
     return _allExpenses;
   }
 
@@ -130,7 +150,7 @@ class Expense with ChangeNotifier {
 
   /// Returns all expenses, plus data on people and categories
   Future<List<Expense>> getAllExpensesFull(bool _isCombined) async {
-    List<Expense> _allExpenses = await getAllExpenses();
+    List<Expense> _allExpenses = await getAllExpenses(isCombined: _isCombined);
     List<Map<String, String>> _allPeople = await _people(_allExpenses);
 
     _allExpenses.forEach((e) {
@@ -141,18 +161,6 @@ class Expense with ChangeNotifier {
           _allPeople.firstWhere((p) => p[e.splitWithPersonId] != null);
     });
 
-    if (!_isCombined) {
-      _allExpenses.removeWhere(
-              (_f) => _f.split == SPLIT.ME_TOTAL || _f.split == SPLIT.OTHER_TOTAL);
-      _allExpenses.forEach((_g) {
-        if (_g.split != SPLIT.NO_SPLIT) {
-          _g.cost /= 2;
-        }
-      });
-    } else {
-      _allExpenses.removeWhere((_h) => _h.split == SPLIT.NO_SPLIT);
-    }
-
     return _allExpenses;
   }
 
@@ -160,40 +168,49 @@ class Expense with ChangeNotifier {
     await FirebaseFirestore.instance.doc('expenses/$expenseId').delete();
   }
 
-  static String getSplitType(Expense e) {
+  static String getSplitType(Expense e, bool _isCombined) {
     var _sentence = '';
     String _paidBy = e.paidByPerson[e.paidByPersonId];
     String _splitWith = e.splitWithPerson[e.splitWithPersonId];
+    String _finalCost = e.cost.toStringAsFixed(2);
 
-    // TODO: here
-    switch (e.split) {
-      case SPLIT.EQUALLY:
-        {
-          _sentence =
-              '$_paidBy paid half of ${e.cost.toString()}€ with $_splitWith';
-          break;
-        }
-      case SPLIT.ME_TOTAL:
-        {
-          _sentence = '$_splitWith owes $_paidBy: ${e.cost.toString()}€';
-          break;
-        }
-      case SPLIT.OTHER_TOTAL:
-        {
-          _sentence = '$_paidBy owes $_splitWith: ${e.cost.toString()}€';
-          break;
-        }
-      case SPLIT.OTHER_EQUALLY:
-        {
-          _sentence =
-              '$_splitWith paid half of ${e.cost.toString()}€ with $_paidBy';
-          break;
-        }
-      case SPLIT.NO_SPLIT:
-        {
-          _sentence = 'This is your expense alone! ($_paidBy)';
-          break;
-        }
+    if (_isCombined) {
+      switch (e.split) {
+        case SPLIT.EQUALLY:
+          {
+            _sentence = '$_paidBy paid half of $_finalCost€ with $_splitWith';
+            break;
+          }
+        case SPLIT.ME_TOTAL:
+          {
+            _sentence = '$_splitWith owes $_paidBy: $_finalCost€';
+            break;
+          }
+        case SPLIT.OTHER_TOTAL:
+          {
+            _sentence = '$_paidBy owes $_splitWith: $_finalCost€';
+            break;
+          }
+        case SPLIT.OTHER_EQUALLY:
+          {
+            _sentence = '$_splitWith paid half of $_finalCost€ with $_paidBy';
+            break;
+          }
+        case SPLIT.NO_SPLIT:
+          {
+            _sentence = '$_finalCost€';
+            break;
+          }
+      }
+    } else {
+      // Single
+      _sentence = '$_finalCost€';
+      if (e.split == SPLIT.ME_TOTAL) {
+        _sentence = '$_paidBy paid $_finalCost€ for me';
+      }
+      if(e.split == SPLIT.OTHER_TOTAL) {
+        _sentence = '$_splitWith paid $_finalCost€ for me';
+      }
     }
     return _sentence;
   }
@@ -204,8 +221,8 @@ class Expense with ChangeNotifier {
         .substring(6)
         .replaceFirst('_', ' ')
         .replaceFirst('EQ', 'We split it eq')
-        .replaceFirst('ME', 'i paid the')
-        .replaceFirst('OTHER T', 'the person I\'m splitting with, paid the t')
+        .replaceFirst('ME TOTAL', 'i paid something in total')
+        .replaceFirst('OTHER TOTAL', 'i owe the total amount to someone')
         .replaceFirst('OTHER', 'the person I\'m splitting with paid, and')
         .replaceFirst('NO', 'Don\'t')
         .toLowerCase();
