@@ -16,6 +16,7 @@ enum MOVE_MONTH { PREVIOUS, NEXT }
 
 class _EVGraphScreenState extends State<EVGraphScreen> {
   DateTime _currentDate = DateTime.now();
+  bool _controlPersonal = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,15 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
                       Text(DateFormat('MMMM yyyy').format(_currentDate)),
                       Expanded(child: prevNextMonth(MOVE_MONTH.NEXT))
                     ],
+                  ),
+                  CheckboxListTile(
+                    title: Text('Personal only?', textAlign: TextAlign.right),
+                    value: _controlPersonal,
+                    onChanged: (_newState) {
+                      setState(() {
+                        _controlPersonal = _newState;
+                      });
+                    },
                   ),
                   if (_expensesToBuildGraph.isEmpty)
                     Padding(
