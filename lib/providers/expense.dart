@@ -208,7 +208,7 @@ class Expense with ChangeNotifier {
       if (e.split == SPLIT.ME_TOTAL) {
         _sentence = '$_paidBy paid $_finalCost€ for me';
       }
-      if(e.split == SPLIT.OTHER_TOTAL) {
+      if (e.split == SPLIT.OTHER_TOTAL) {
         _sentence = '$_splitWith paid $_finalCost€ for me';
       }
     }
@@ -243,5 +243,10 @@ class Expense with ChangeNotifier {
     _categoryList.sort((a, b) => b.total.compareTo(a.total));
     _categoryList.removeWhere((_cat) => _cat.total == 0.0);
     return _categoryList;
+  }
+
+  static double categoryTotal(List<Category> _categoryList) {
+    return _categoryList.fold(
+        0, (accumulator, currentValue) => accumulator += currentValue.total);
   }
 }

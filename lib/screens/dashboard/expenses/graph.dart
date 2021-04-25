@@ -62,6 +62,12 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
                       child: const Text('No expenses recorded!'),
                     ),
                   if (_expensesToBuildGraph.isNotEmpty)
+                    Text(
+                      'Total: ${Expense.categoryTotal(_categoriesToBuildGraph).toStringAsFixed(2)}€',
+                      style: TextStyle(
+                          fontSize: 20, decoration: TextDecoration.underline),
+                    ),
+                  if (_expensesToBuildGraph.isNotEmpty)
                     Expanded(
                       child: Row(
                         children: [
