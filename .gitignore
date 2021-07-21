@@ -60,3 +60,6 @@ app.*.map.json
 # Ignore all local history of files
 .history
 .ionide
+
+# Secret
+android/app/google-services.json
