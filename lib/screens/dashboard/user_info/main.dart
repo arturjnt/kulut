@@ -24,11 +24,14 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 margin: const EdgeInsets.symmetric(vertical: 16),
                 child: Card(
                   child: ListTile(
+                    // Profile Picture
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(50.0),
                       child: Image.network(authData.pic, width: 50),
                     ),
+                    // User Name
                     title: Text(authData.name),
+                    // Balance
                     subtitle: Row(
                       children: [
                         const Text('Total balance: '),
@@ -40,12 +43,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                         ),
                       ],
                     ),
+                    // Settle Button
                     trailing: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context)
                             .pushNamed(SettleScreen.routeName)
                             .whenComplete(() {
-                          // Update Balance
+                          // Update Balance when leaving the Settle Screen
                           setState(() {});
                         });
                       },

@@ -99,6 +99,11 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
     );
   }
 
+  /// Creates the button to move the range of dates
+  ///
+  /// It does this by assigning a new value to _currentDate
+  /// When the widget is rebuilt, it uses that value to get the expenses from
+  /// the method: {@link _monthlyExpenses}
   IconButton prevNextMonth(MOVE_MONTH mm) {
     return IconButton(
         icon: Icon((mm == MOVE_MONTH.PREVIOUS)
@@ -106,6 +111,7 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
             : Icons.chevron_right),
         onPressed: () async {
           setState(() {
+            // TODO: needs to be renamed : can be previous or next
             DateTime previousDate = _currentDate;
             _currentDate = DateTime(
                 previousDate.year,
@@ -117,6 +123,9 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
         });
   }
 
+  /// Gets all expenses and filters down to this month
+  ///
+  /// Not ideal but Firebase's Firestore does lack some querying functionality.
   Future<List<Expense>> _monthlyExpenses(
       Future<List<Expense>> _allExpenses, int month, int year) async {
     List<Expense> _allExpensesDone = await _allExpenses;
@@ -127,6 +136,8 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
     return _allExpensesDone;
   }
 
+  /// Gets the expense categories and...
+  /// returns a good-looking legend for the pie chart
   List<Widget> getLegend(List<Category> _categoriesToBuildGraph) {
     double size = 12;
     return _categoriesToBuildGraph.map((c) {
@@ -145,6 +156,9 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
     }).toList();
   }
 
+  /// Draws and shows the sections of the chart
+  ///
+  /// Also shows the badges
   List<PieChartSectionData> showingSections(
       List<Category> _categoriesToBuildGraph) {
     double _totalTotal = _categoriesToBuildGraph.fold(

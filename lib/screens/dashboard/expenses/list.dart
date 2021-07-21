@@ -33,6 +33,8 @@ class _EVListScreenState extends State<EVListScreen> {
               ? LoadingScreen()
               : Column(
                   children: [
+                    // TODO: take the children out of the tree into it's
+                    // TODO: own method, to make it more readable
                     CheckboxListTile(
                         title: Text('Show Combined Expenses',
                             textAlign: TextAlign.right),
@@ -48,10 +50,13 @@ class _EVListScreenState extends State<EVListScreen> {
                         itemBuilder: (ctx, i) {
                           Expense e = expenses[i];
 
+                          // TODO: take the card out of the tree into it's
+                          // TODO: own method, to make it more readable
                           return Card(
                             key: Key(expenses[i].id),
                             child: Slidable(
                               actionPane: SlidableScrollActionPane(),
+                              // Slidable actions (Edit/Delete/etc.)
                               secondaryActions: [
                                 IconSlideAction(
                                   caption: 'Edit',
@@ -81,6 +86,7 @@ class _EVListScreenState extends State<EVListScreen> {
                                   },
                                 )
                               ],
+                              // Actual list item with content and decoration
                               child: ListTile(
                                 leading: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,

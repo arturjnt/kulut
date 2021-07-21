@@ -39,6 +39,9 @@ class _SettleScreenState extends State<SettleScreen> {
                       width: double.infinity,
                       child: Column(
                         children: [
+                          // TODO: take the children out of the tree into it's
+                          // TODO: own method, to make it more readable
+                          // Who
                           DropdownButton<String>(
                             value: _shareWithWhomId,
                             onChanged: (String newValue) {
@@ -62,10 +65,12 @@ class _SettleScreenState extends State<SettleScreen> {
                               );
                             }).toList(),
                           ),
+                          // How much
                           Text(
                             'Owed amount: ${balanceSnap.data.toStringAsFixed(2)}€',
                             style: TextStyle(fontSize: 24),
                           ),
+                          // Actions
                           Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: ElevatedButton(

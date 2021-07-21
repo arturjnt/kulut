@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Static Category Class and helper methods (i.e. getCategoryById)
 class Category {
   final int id;
   final String name;

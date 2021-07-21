@@ -36,7 +36,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Navigator.of(context)
               .pushNamed(AddOrEditScreen.routeName)
               .whenComplete(() {
-            // Update Balance
+            // Update Balance when popping the AddExpense Screen
             setState(() {});
           });
         },
@@ -44,6 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  /// Show the "ExpenseView (EV)List" screen
   Widget listButton(context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16, left: 4, right: 4),
@@ -52,7 +53,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Navigator.of(context)
               .pushNamed(EVListScreen.routeName)
               .whenComplete(() {
-            // Update Balance
+            // Update Balance when popping the EVList Screen
             setState(() {});
           });
         },

@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         ),
         home: FutureBuilder(
             // Initializes firebase when you enter and are logged in
-            // It's so the logout button works
+            // Makes the logout button function properly
             future: Firebase.initializeApp(),
             builder: (_, firebaseAppSnap) {
               if (firebaseAppSnap.connectionState == ConnectionState.waiting) {
@@ -54,6 +54,8 @@ class MyApp extends StatelessWidget {
                         ConnectionState.waiting) {
                       return LoadingScreen();
                     }
+                    // If you're logged, go to dashboard
+                    // if not, go to the auth screen
                     return (firebaseAuthSnap.hasData)
                         ? DashboardScreen()
                         : AuthScreen();

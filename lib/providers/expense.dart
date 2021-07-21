@@ -8,6 +8,11 @@ import 'categories.dart';
 
 enum SPLIT { EQUALLY, ME_TOTAL, OTHER_TOTAL, OTHER_EQUALLY, NO_SPLIT }
 
+/// Expense Provider managing all the business logic of the expenses
+/// 
+/// Contains constructors, maps, CRUD and basic logic that ideally Firebase's
+/// Firestore would allow me to do it there (i.e. getAllExpenses duplicated 
+/// querying, where an OR would be enough)
 class Expense with ChangeNotifier {
   String id;
   String description;

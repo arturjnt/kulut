@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../providers/auth.dart';
 
+/// ? Needs UI improvements ?
+/// ? Maybe different auth types ?
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
 

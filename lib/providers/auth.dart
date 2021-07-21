@@ -8,6 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'expense.dart';
 
+/// Auth Provider (sign in and out)
+///
+/// Contains helper methods like getting other users to share
+///
+/// Also works the user information and inherent data
+/// (i.e. settling expenses & getting balance)
+/// ? Arguably should be in the Expense Provider ?
 class Auth with ChangeNotifier {
   String _id;
   String _name;

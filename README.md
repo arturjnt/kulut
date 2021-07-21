@@ -21,9 +21,7 @@ There are known bugs and major improvements to be done:
 2. When editing is saved, the expense owner is changing (it should stay the original one)
 
 ### Missing Work
-1. Comments
-2. Tests
-
+1. Tests
 
 ### Suggested improvements
 1. Travel category

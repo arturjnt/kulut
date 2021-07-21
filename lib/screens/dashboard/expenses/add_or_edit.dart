@@ -114,6 +114,8 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
+                  // TODO: Move the children out of the function
+                  // TODO: to make it more readable
                   // People picker
                   if (_pickedSPLIT != SPLIT.NO_SPLIT)
                     DropdownButton<String>(
@@ -251,6 +253,8 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                       ),
                     ),
                   ),
+                  // TODO: Move the submit form out of the function
+                  // TODO: to make it more readable
                   // Submit form
                   InkWell(
                     child: ElevatedButton(
