@@ -28,3 +28,7 @@ There are known bugs and major improvements to be done:
 ### Suggested improvements
 1. Travel category
 2. Split with more than one people
+3. Add categories dynamically
+
+## Files to copy out somewhere safe
+* /android/app/google-services.json
