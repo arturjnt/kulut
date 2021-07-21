@@ -6,6 +6,8 @@ Check my [website](https://artur-teixeira.tech/)
 
 Follow me on socials [LinkedIn](https://www.linkedin.com/in/arturjnt/) and [Twitter](https://twitter.com/arturjnt)
 
+![Printscreen of the dashboard](/assets/images/print.jpeg)
+
 ## About
 
 This project was mainly build to work as an android apk, but flutter being flutter, it's easily converted to web and mobile.
