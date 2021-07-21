@@ -58,6 +58,11 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
         case MODE.EDIT:
           {
             setState(() {
+              // TODO: editing not showing real value if it's a combined expense
+              // TODO: and the combined expenses checkbox is unticked
+
+              // TODO: When editing is saved, the expense owner is changing
+              // TODO: it should stay the original one
               _descriptionController.text = e.description;
               _costController.text = e.cost.toString();
               _pickedSPLIT = e.split;
