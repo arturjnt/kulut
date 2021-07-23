@@ -58,8 +58,6 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
         case MODE.EDIT:
           {
             setState(() {
-              // TODO: When editing is saved, the expense owner is changing
-              // TODO: it should stay the original one
               _descriptionController.text = e.description;
               _costController.text = e.cost.toString();
               _pickedSPLIT = e.split;
@@ -102,8 +100,33 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
             people = authSnap.data;
           }
 
-          // Set default as first of the list
-          _shareWithWhomId = people[0]['id'];
+          // Set default as first of the list, if not editing
+          if (_shareWithWhomId == null) _shareWithWhomId = people[0]['id'];
+
+          // If you don't find the "_shareWithWhomId" in the people list
+          // It's because you are that person, and as such...
+          // The split type needs to be reversed
+          if (people
+              .where((person) => person['id'] == _shareWithWhomId)
+              .isEmpty) {
+            _shareWithWhomId = e.paidByPersonId;
+            // Reverse split
+            switch (_pickedSPLIT) {
+              case SPLIT.EQUALLY:
+                _pickedSPLIT = SPLIT.OTHER_EQUALLY;
+                break;
+              case SPLIT.OTHER_EQUALLY:
+                _pickedSPLIT = SPLIT.EQUALLY;
+                break;
+              case SPLIT.ME_TOTAL:
+                _pickedSPLIT = SPLIT.OTHER_TOTAL;
+                break;
+              case SPLIT.OTHER_TOTAL:
+                _pickedSPLIT = SPLIT.ME_TOTAL;
+                break;
+              default:
+            }
+          }
 
           return Form(
             key: _formKey,
