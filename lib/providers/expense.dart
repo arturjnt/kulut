@@ -9,9 +9,9 @@ import 'categories.dart';
 enum SPLIT { EQUALLY, ME_TOTAL, OTHER_TOTAL, OTHER_EQUALLY, NO_SPLIT }
 
 /// Expense Provider managing all the business logic of the expenses
-/// 
+///
 /// Contains constructors, maps, CRUD and basic logic that ideally Firebase's
-/// Firestore would allow me to do it there (i.e. getAllExpenses duplicated 
+/// Firestore would allow me to do it there (i.e. getAllExpenses duplicated
 /// querying, where an OR would be enough)
 class Expense with ChangeNotifier {
   String id;
@@ -55,6 +55,21 @@ class Expense with ChangeNotifier {
     };
   }
 
+  static Expense fromDB(DocumentSnapshot doc) {
+    return Expense(
+        id: doc.id,
+        description: doc['description'],
+        cost: doc['cost'],
+        when: DateTime.fromMillisecondsSinceEpoch(doc['when']),
+        paidByPersonId: doc['paidByPersonId'],
+        splitWithPersonId: doc['splitWithPersonId'],
+        categoryId: doc['categoryId'],
+        settled: doc['settled'],
+        split: SPLIT.values.firstWhere(
+          (e) => e.toString() == doc['split'],
+        ));
+  }
+
   Future<void> saveExpense(Expense e) async {
     if (e.split == SPLIT.NO_SPLIT) {
       e.settled = true;
@@ -68,6 +83,13 @@ class Expense with ChangeNotifier {
 
   Future<void> editExpense(Expense e) async {
     await FirebaseFirestore.instance.doc('expenses/${e.id}').update(toMap(e));
+  }
+
+  Future<Expense> getExpenseById(String id) async {
+    DocumentSnapshot doc =
+        await FirebaseFirestore.instance.doc('expenses/$id').get();
+
+    return fromDB(doc);
   }
 
   Future<List<Expense>> getAllExpenses({isCombined = false}) async {
@@ -100,20 +122,7 @@ class Expense with ChangeNotifier {
     }
 
     // create expenses and return
-    List<Expense> _allExpenses = _docs.map((doc) {
-      return Expense(
-          id: doc.id,
-          description: doc['description'],
-          cost: doc['cost'],
-          when: DateTime.fromMillisecondsSinceEpoch(doc['when']),
-          paidByPersonId: doc['paidByPersonId'],
-          splitWithPersonId: doc['splitWithPersonId'],
-          categoryId: doc['categoryId'],
-          settled: doc['settled'],
-          split: SPLIT.values.firstWhere(
-            (e) => e.toString() == doc['split'],
-          ));
-    }).toList();
+    List<Expense> _allExpenses = _docs.map((doc) => fromDB(doc)).toList();
 
     if (!isCombined) {
       // If i'm myself and i paid the total for someone else, pls remove

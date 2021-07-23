@@ -62,10 +62,14 @@ class _EVListScreenState extends State<EVListScreen> {
                                   caption: 'Edit',
                                   color: Colors.yellow,
                                   icon: Icons.edit,
-                                  onTap: () {
+                                  onTap: () async {
+                                    // Getting the original expense before editing
+                                    Expense originalExpense =
+                                        await _expenseProvider
+                                            .getExpenseById(e.id);
                                     Navigator.pushNamed(
                                             context, AddOrEditScreen.routeName,
-                                            arguments: e)
+                                            arguments: originalExpense)
                                         .whenComplete(() {
                                       setState(() {
                                         // Updated the screen with the edited expense
