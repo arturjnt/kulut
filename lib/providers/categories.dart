@@ -79,6 +79,12 @@ class Categories {
         icon: Icons.medical_services_outlined,
       ),
       Category(
+        id: 10,
+        name: 'Travel',
+        color: Colors.orange,
+        icon: Icons.airplanemode_active
+      ),
+      Category(
         id: 9,
         name: 'Others',
         color: Colors.teal,
