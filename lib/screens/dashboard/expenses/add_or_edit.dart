@@ -299,6 +299,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                             case MODE.EDIT:
                               {
                                 _expenseToSubmit.id = e.id;
+                                _expenseToSubmit.settled = e.settled;
                                 await _expenseProvider
                                     .editExpense(_expenseToSubmit);
                                 break;
