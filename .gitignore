@@ -63,3 +63,6 @@ app.*.map.json
 
 # Secret
 android/app/google-services.json
+.firebaserc
+functions/kulut-3f2c9-firebase-adminsdk-k1ycb-bf60c8e66b.json
+functions/src/index.ts

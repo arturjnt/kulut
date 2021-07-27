@@ -16,6 +16,7 @@ This is a **WIP**, there are known bugs and major improvements to be done, pleas
 
 ## Build instructions
 Generate a file `google-services.json` on firebase and add it to the `/android/app/` folder. It should be similar to the `/android/app/google-services.json.example` file already there.
+Same goes for `.firebaserc`, `functions/serviceAccount.json` and `functions/src/index.ts`.
 
 Then run `flutter run` to compile to debug mode.
 

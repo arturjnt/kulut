@@ -9,6 +9,8 @@ import 'expenses/graph.dart';
 import 'expenses/list.dart';
 import 'expenses/add_or_edit.dart';
 
+// TODO: actually send notifications
+// TODO: move this code somewhere it makes sense
 void _showDiag(BuildContext context, RemoteNotification notification) {
   showDialog(
     context: context,
@@ -36,15 +38,12 @@ void _showDiag(BuildContext context, RemoteNotification notification) {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message?.messageId}");
+  print("Handling a background message: ${message.messageId}");
 }
 
 Future<void> _instanceId(BuildContext context) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-  var token = await FirebaseMessaging.instance.getToken();
-  print("Print Instance Token ID: " + token);
 
   FirebaseMessaging.instance.requestPermission();
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {

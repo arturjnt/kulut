@@ -1,0 +1,13 @@
+# Compiled JavaScript files
+lib/**/*.js
+lib/**/*.js.map
+
+# TypeScript v1 declaration files
+typings/
+
+# Node.js dependency directory
+node_modules/
+
+# Secret
+kulut-3f2c9-firebase-adminsdk-k1ycb-bf60c8e66b.json
+src/index.ts

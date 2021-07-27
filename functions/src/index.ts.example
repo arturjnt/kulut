@@ -1,0 +1,26 @@
+import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
+
+var serviceAccount = require('../serviceAccount.json.example');
+
+exports.notifyOfExpense = functions.firestore
+    .document('expenses/{e}')
+    .onCreate((snapshot, context) => {
+      const _snapData = snapshot.data();
+      console.log(_snapData.description);
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: 'https://kulut-*****.firebaseio.com',
+      });
+      admin.messaging().sendToDevice(
+        'token',
+          {
+            notification: {
+              title: 'New expense added!',
+              body: `Expense: ${_snapData.description} ` +
+                `cost ${_snapData.cost}!`,
+            },
+          }
+      );
+      return;
+    });

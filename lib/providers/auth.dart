@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'expense.dart';
 
@@ -81,12 +82,14 @@ class Auth with ChangeNotifier {
 
     // Check if he's already registered, if not, do it
     if (qSnap.docs.toString() == '[]') {
+      String token = await FirebaseMessaging.instance.getToken();
+
       DocumentReference _newUserRef =
           await FirebaseFirestore.instance.collection('users').add({
         'id': user.uid,
         'displayName': user.displayName,
         'pic': user.photoURL,
-        'balance': 0.0,
+        'fm_token': token,
       });
       DocumentSnapshot _newUser = await _newUserRef.get();
       return _newUser.data();
