@@ -94,6 +94,12 @@ class Auth with ChangeNotifier {
       DocumentSnapshot _newUser = await _newUserRef.get();
       return _newUser.data();
     } else {
+      // Save new token on login, always
+      String token = await FirebaseMessaging.instance.getToken();
+      FirebaseFirestore.instance
+          .doc('users/${qSnap.docs[0].id}')
+          .update({'fm_token': token});
+
       return qSnap.docs[0].data();
     }
   }

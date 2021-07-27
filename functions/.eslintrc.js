@@ -24,5 +24,5 @@ module.exports = {
     '@typescript-eslint',
     'import',
   ],
-  rules: {},
+  rules: {'indent': 'off'},
 };
