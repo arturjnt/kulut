@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'providers/auth.dart';
 import 'providers/expense.dart';
@@ -14,31 +13,6 @@ import 'screens/dashboard/expenses/add_or_edit.dart';
 import 'screens/dashboard/expenses/list.dart';
 import 'screens/dashboard/user_info/settle.dart';
 import 'screens/loading/main.dart';
-
-Future<void> _not(RemoteMessage message) async {
-  print("Handling a background message: ${message?.messageId}");
-}
-
-Future<void> _instanceId() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-
-  var token = await FirebaseMessaging.instance.getToken();
-  print("Print Instance Token ID: " + token);
-
-  FirebaseMessaging.instance.requestPermission();
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    RemoteNotification notification = message.notification;
-    AndroidNotification android = message.notification?.android;
-
-    print('notification: ${notification.title} ${notification.body}');
-    print('android: ${android.toString()}');
-  });
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    print('A new onMessageOpenedApp event was published!');
-  });
-  FirebaseMessaging.onBackgroundMessage(_not);
-}
 
 void main() {
   runApp(MyApp());
@@ -67,7 +41,7 @@ class MyApp extends StatelessWidget {
         home: FutureBuilder(
             // Initializes firebase when you enter and are logged in
             // Makes the logout button function properly
-            future: _instanceId(),
+            future: Firebase.initializeApp(),
             builder: (_, firebaseAppSnap) {
               if (firebaseAppSnap.connectionState == ConnectionState.waiting) {
                 return LoadingScreen();
