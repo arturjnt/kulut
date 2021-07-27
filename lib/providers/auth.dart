@@ -70,7 +70,7 @@ class Auth with ChangeNotifier {
         .where('id', isEqualTo: id)
         .get();
     var user = qSnap.docs[0].data();
-    return user['displayName'];
+    return (user as Map)['displayName'];
   }
 
   Future<Map> createOrGetUser(User user) async {
