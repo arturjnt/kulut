@@ -54,7 +54,7 @@ class _SettleScreenState extends State<SettleScreen> {
   }
 }
 
-/// Separate from main
+/// Separate from main to make the code more readable
 List<Widget> _settleInfo(
     setState, context, _authProvider, _shareWithWhomId, people, balanceSnap) {
   return [
