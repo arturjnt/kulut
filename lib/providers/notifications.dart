@@ -29,7 +29,7 @@ class Notifications {
     /// When clicking the notification it redirects you to the EVList Screen
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
-      Navigator.of(context).pushNamed(EVListScreen.routeName);
+      Navigator.of(context).pushReplacementNamed(EVListScreen.routeName);
     });
 
     ///! If the app is not ON at all (see below)
