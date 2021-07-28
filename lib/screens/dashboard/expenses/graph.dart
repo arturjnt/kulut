@@ -111,13 +111,12 @@ class _EVGraphScreenState extends State<EVGraphScreen> {
             : Icons.chevron_right),
         onPressed: () async {
           setState(() {
-            // TODO: needs to be renamed : can be previous or next
-            DateTime previousDate = _currentDate;
+            DateTime previouslySelectedDate = _currentDate;
             _currentDate = DateTime(
-                previousDate.year,
+                previouslySelectedDate.year,
                 (mm == MOVE_MONTH.PREVIOUS)
-                    ? previousDate.month - 1
-                    : previousDate.month + 1,
+                    ? previouslySelectedDate.month - 1
+                    : previouslySelectedDate.month + 1,
                 1);
           });
         });
