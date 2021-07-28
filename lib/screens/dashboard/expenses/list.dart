@@ -33,8 +33,6 @@ class _EVListScreenState extends State<EVListScreen> {
               ? LoadingScreen()
               : Column(
                   children: [
-                    // TODO: take the children out of the tree into it's
-                    // TODO: own method, to make it more readable
                     CheckboxListTile(
                         title: Text('Show Combined Expenses',
                             textAlign: TextAlign.right),
@@ -49,94 +47,14 @@ class _EVListScreenState extends State<EVListScreen> {
                         itemCount: expenses.length,
                         itemBuilder: (ctx, i) {
                           Expense e = expenses[i];
-
-                          // TODO: take the card out of the tree into it's
-                          // TODO: own method, to make it more readable
-                          return Card(
-                            key: Key(expenses[i].id),
-                            child: Slidable(
-                              actionPane: SlidableScrollActionPane(),
-                              // Slidable actions (Edit/Delete/etc.)
-                              secondaryActions: [
-                                IconSlideAction(
-                                  caption: 'Edit',
-                                  color: Colors.yellow,
-                                  icon: Icons.edit,
-                                  onTap: () async {
-                                    // Getting the original expense before editing
-                                    Expense originalExpense =
-                                        await _expenseProvider
-                                            .getExpenseById(e.id);
-                                    Navigator.pushNamed(
-                                            context, AddOrEditScreen.routeName,
-                                            arguments: originalExpense)
-                                        .whenComplete(() {
-                                      setState(() {
-                                        // Updated the screen with the edited expense
-                                      });
-                                    });
-                                  },
-                                ),
-                                IconSlideAction(
-                                  caption: 'Delete',
-                                  color: Colors.red,
-                                  foregroundColor: Colors.black,
-                                  icon: Icons.delete,
-                                  onTap: () {
-                                    e.deleteExpense(e.id);
-                                    setState(() {
-                                      expenses.removeAt(i);
-                                    });
-                                  },
-                                )
-                              ],
-                              // Actual list item with content and decoration
-                              child: ListTile(
-                                leading: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 40,
-                                      width: 40,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color:
-                                              Theme.of(context).primaryColor),
-                                      child: Icon(
-                                        e.category.icon,
-                                        color: e.category.color,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                title: Row(
-                                  children: [
-                                    if (!e.settled)
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 8.0),
-                                        child: Icon(Icons.cancel_outlined,
-                                            size: 20,
-                                            color:
-                                                Theme.of(context).errorColor),
-                                      ),
-                                    Text(e.description),
-                                  ],
-                                ),
-                                subtitle:
-                                    Text(Expense.getSplitType(e, _isCombined)),
-                                trailing: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                        DateFormat('HH:mm\ndd/MM/yyyy')
-                                            .format(e.when),
-                                        textAlign: TextAlign.right),
-                                  ],
-                                ),
-                                isThreeLine: true,
-                              ),
-                            ),
+                          return _cardForList(
+                            setState,
+                            context,
+                            _expenseProvider,
+                            _isCombined,
+                            expenses,
+                            i,
+                            e,
                           );
                         },
                       ),
@@ -147,4 +65,93 @@ class _EVListScreenState extends State<EVListScreen> {
       ),
     );
   }
+}
+
+/// Separate from main to make the code more readable
+Widget _cardForList(
+  setState,
+  context,
+  _expenseProvider,
+  _isCombined,
+  expenses,
+  i,
+  e,
+) {
+  return Card(
+    key: Key(expenses[i].id),
+    child: Slidable(
+      actionPane: SlidableScrollActionPane(),
+      // Slidable actions (Edit/Delete/etc.)
+      secondaryActions: [
+        IconSlideAction(
+          caption: 'Edit',
+          color: Colors.yellow,
+          icon: Icons.edit,
+          onTap: () async {
+            // Getting the original expense before editing
+            Expense originalExpense =
+                await _expenseProvider.getExpenseById(e.id);
+            Navigator.pushNamed(context, AddOrEditScreen.routeName,
+                    arguments: originalExpense)
+                .whenComplete(() {
+              setState(() {
+                // Updated the screen with the edited expense
+              });
+            });
+          },
+        ),
+        IconSlideAction(
+          caption: 'Delete',
+          color: Colors.red,
+          foregroundColor: Colors.black,
+          icon: Icons.delete,
+          onTap: () {
+            e.deleteExpense(e.id);
+            setState(() {
+              expenses.removeAt(i);
+            });
+          },
+        )
+      ],
+      // Actual list item with content and decoration
+      child: ListTile(
+        leading: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).primaryColor),
+              child: Icon(
+                e.category.icon,
+                color: e.category.color,
+              ),
+            ),
+          ],
+        ),
+        title: Row(
+          children: [
+            if (!e.settled)
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Icon(Icons.cancel_outlined,
+                    size: 20, color: Theme.of(context).errorColor),
+              ),
+            Text(e.description),
+          ],
+        ),
+        subtitle: Text(Expense.getSplitType(e, _isCombined)),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(DateFormat('HH:mm\ndd/MM/yyyy').format(e.when),
+                textAlign: TextAlign.right),
+          ],
+        ),
+        isThreeLine: true,
+      ),
+    ),
+  );
 }

@@ -134,8 +134,6 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  // TODO: Move the children out of the function
-                  // TODO: to make it more readable
                   // People picker
                   if (_pickedSPLIT != SPLIT.NO_SPLIT)
                     DropdownButton<String>(
@@ -273,59 +271,21 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                       ),
                     ),
                   ),
-                  // TODO: Move the submit form out of the function
-                  // TODO: to make it more readable
                   // Submit form
-                  InkWell(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          Expense _expenseToSubmit = Expense(
-                              description: _descriptionController.text,
-                              cost: double.parse(_costController.text),
-                              when: _selectedDate,
-                              paidByPersonId: _authProvider.id,
-                              splitWithPersonId: _shareWithWhomId,
-                              categoryId: _pickedCategoryId,
-                              split: _pickedSPLIT);
-
-                          switch (_mode) {
-                            case MODE.ADD:
-                              {
-                                await _expenseProvider
-                                    .saveExpense(_expenseToSubmit);
-                                break;
-                              }
-                            case MODE.EDIT:
-                              {
-                                _expenseToSubmit.id = e.id;
-                                _expenseToSubmit.settled = e.settled;
-                                await _expenseProvider
-                                    .editExpense(_expenseToSubmit);
-                                break;
-                              }
-                          }
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('Expense ${_modeToPrint}ed!')),
-                          );
-                          Navigator.of(context).pop();
-                        }
-                      },
-                      child: Container(
-                        height: 50,
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: Text(
-                              '${_modeToPrint.toString().capitalize()}',
-                              textAlign: TextAlign.center,
-                            )),
-                          ],
-                        ),
-                      ),
-                    ),
+                  _submitFormButton(
+                    context,
+                    _mode,
+                    _modeToPrint,
+                    _expenseProvider,
+                    _authProvider,
+                    _formKey,
+                    _descriptionController,
+                    _costController,
+                    _selectedDate,
+                    _shareWithWhomId,
+                    _pickedCategoryId,
+                    _pickedSPLIT,
+                    e,
                   )
                 ],
               ),
@@ -335,4 +295,70 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
       ),
     );
   }
+}
+
+/// Separate from main to make the code more readable
+Widget _submitFormButton(
+  context,
+  _mode,
+  _modeToPrint,
+  _expenseProvider,
+  _authProvider,
+  _formKey,
+  _descriptionController,
+  _costController,
+  _selectedDate,
+  _shareWithWhomId,
+  _pickedCategoryId,
+  _pickedSPLIT,
+  e,
+) {
+  return InkWell(
+    child: ElevatedButton(
+      onPressed: () async {
+        if (_formKey.currentState.validate()) {
+          Expense _expenseToSubmit = Expense(
+              description: _descriptionController.text,
+              cost: double.parse(_costController.text),
+              when: _selectedDate,
+              paidByPersonId: _authProvider.id,
+              splitWithPersonId: _shareWithWhomId,
+              categoryId: _pickedCategoryId,
+              split: _pickedSPLIT);
+
+          switch (_mode) {
+            case MODE.ADD:
+              {
+                await _expenseProvider.saveExpense(_expenseToSubmit);
+                break;
+              }
+            case MODE.EDIT:
+              {
+                _expenseToSubmit.id = e.id;
+                _expenseToSubmit.settled = e.settled;
+                await _expenseProvider.editExpense(_expenseToSubmit);
+                break;
+              }
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Expense ${_modeToPrint}ed!')),
+          );
+          Navigator.of(context).pop();
+        }
+      },
+      child: Container(
+        height: 50,
+        child: Row(
+          children: [
+            Expanded(
+                child: Text(
+              '${_modeToPrint.toString().capitalize()}',
+              textAlign: TextAlign.center,
+            )),
+          ],
+        ),
+      ),
+    ),
+  );
 }
