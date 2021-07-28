@@ -59,8 +59,7 @@ class Notifications {
               child: const Text('Show me'),
               onPressed: () async {
                 Navigator.of(context)
-                    .pushNamed(EVListScreen.routeName)
-                    .whenComplete(() => Navigator.of(context).pop(false));
+                    .pushReplacementNamed(EVListScreen.routeName);
               },
             )
           ],
