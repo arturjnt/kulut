@@ -9,7 +9,6 @@ import 'expenses/graph.dart';
 import 'expenses/list.dart';
 import 'expenses/add_or_edit.dart';
 
-
 class DashboardScreen extends StatefulWidget {
   static const routeName = '/dashboard';
 
