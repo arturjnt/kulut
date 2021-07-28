@@ -14,6 +14,9 @@ exports.notifyOfExpense = functions.firestore
     .onCreate(async (snapshot, context) => {
         const _snapData = snapshot.data();
 
+        // Don't send notifications for NO_SPLIT expenses
+        if (_snapData.splitWithPersonId == null) return;
+
         // Get person firebase messaging token from ID
         const user = await admin.firestore().collection('users')
             .where('id', '==', _snapData.splitWithPersonId)
