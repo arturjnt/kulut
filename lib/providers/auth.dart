@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'expense.dart';
 
@@ -70,7 +71,7 @@ class Auth with ChangeNotifier {
         .where('id', isEqualTo: id)
         .get();
     var user = qSnap.docs[0].data();
-    return user['displayName'];
+    return (user as Map)['displayName'];
   }
 
   Future<Map> createOrGetUser(User user) async {
@@ -81,16 +82,24 @@ class Auth with ChangeNotifier {
 
     // Check if he's already registered, if not, do it
     if (qSnap.docs.toString() == '[]') {
+      String token = await FirebaseMessaging.instance.getToken();
+
       DocumentReference _newUserRef =
           await FirebaseFirestore.instance.collection('users').add({
         'id': user.uid,
         'displayName': user.displayName,
         'pic': user.photoURL,
-        'balance': 0.0,
+        'fm_token': token,
       });
       DocumentSnapshot _newUser = await _newUserRef.get();
       return _newUser.data();
     } else {
+      // Save new token on login, always
+      String token = await FirebaseMessaging.instance.getToken();
+      FirebaseFirestore.instance
+          .doc('users/${qSnap.docs[0].id}')
+          .update({'fm_token': token});
+
       return qSnap.docs[0].data();
     }
   }

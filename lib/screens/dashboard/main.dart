@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../providers/notifications.dart';
+
 import '../app_bar/main.dart';
 import 'user_info/main.dart';
 
@@ -19,16 +21,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: KulutAppBar(appBar: AppBar()),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              UserInfoScreen(),
-              listButton(context),
-              EVGraphScreen(),
-            ],
-          ),
-        ),
+      body: FutureBuilder(
+        // Initialize notifications as soon as you're logged in
+        future: Notifications.instanceId(context),
+        builder: (_, __) {
+          return Container(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  UserInfoScreen(),
+                  listButton(context),
+                  EVGraphScreen(),
+                ],
+              ),
+            ),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),

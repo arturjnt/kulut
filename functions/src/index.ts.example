@@ -1,0 +1,37 @@
+import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
+
+var serviceAccount = require('../serviceAccount.json.example');
+
+// Init and signIn on Firebase
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: 'https://kulut-*****.firebaseio.com',
+});
+
+exports.notifyOfExpense = functions.firestore
+    .document('expenses/{e}')
+    .onCreate(async (snapshot, context) => {
+        const _snapData = snapshot.data();
+
+        // Don't send notifications for NO_SPLIT expenses
+        if (_snapData.splitWithPersonId == null) return;
+
+        // Get person firebase messaging token from ID
+        const user = await admin.firestore().collection('users')
+            .where('id', '==', _snapData.splitWithPersonId)
+            .get();
+
+        // Send message to the splitWith person's device
+        admin.messaging().sendToDevice(
+            user.docs[0].data()['fm_token'],
+            {
+                notification: {
+                    title: 'New expense added!',
+                    body: `Expense: ${_snapData.description} ` +
+                        `cost ${_snapData.cost}!`,
+                },
+            }
+        );
+        return;
+    });
